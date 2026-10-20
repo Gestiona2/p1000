@@ -211,18 +211,29 @@ export function montarCarrito() {
     avisar("Pedido enviado. Revisa WhatsApp.");
   }
 
+  function opcionesColor(producto) {
+    const lista = Array.isArray(producto?.colores)
+      ? producto.colores
+      : [producto?.color].filter(Boolean);
+    return [...new Set(lista.filter(Boolean))];
+  }
+
   function abrirModal(producto) {
     if (!modal || !modalFondo || !formPar) return;
     productoModal = producto;
     focoModal = document.activeElement;
     overflowPrevio = document.body.style.overflow;
 
+    const colores = opcionesColor(producto);
     tituloPar.textContent = producto.titulo || "Agregar al pedido";
-    refPar.textContent = producto.color
-      ? `Color de la referencia: ${producto.color}`
-      : "Elige talla y color para este par.";
+    refPar.textContent = colores.length > 1
+      ? "Elige la talla y el color disponibles para este par."
+      : "Elige la talla para este par.";
     tallaPar.value = "";
-    colorPar.value = producto.color || "";
+    colorPar.innerHTML = colores.length
+      ? colores.map((color) => `<option value="${escapar(color)}">${escapar(color)}</option>`).join("")
+      : '<option value="">Por confirmar</option>';
+    colorPar.value = colores.includes(producto.color) ? producto.color : colores[0] || "";
 
     modalFondo.hidden = false;
     modal.hidden = false;
@@ -254,7 +265,7 @@ export function montarCarrito() {
     if (!color) {
       colorPar.focus();
       colorPar.classList.add("campo-falta");
-      avisar("Escribe el color de este par");
+      avisar("Elige el color de este par");
       return;
     }
 
@@ -305,18 +316,26 @@ export function montarCarrito() {
   [tallaPar, colorPar].forEach((campo) => {
     campo?.addEventListener("input", () => campo.classList.remove("campo-falta"));
   });
-  document.getElementById("formParDetalle")?.querySelectorAll("input").forEach((campo) => {
+  document.getElementById("formParDetalle")?.querySelectorAll("input, select").forEach((campo) => {
     campo.addEventListener("input", () => campo.classList.remove("campo-falta"));
+    campo.addEventListener("change", () => campo.classList.remove("campo-falta"));
   });
 
   // Agregar desde tarjetas, ficha de producto y promoción.
   document.addEventListener("click", (evento) => {
     const agregar = evento.target.closest("[data-agregar]");
     if (agregar) {
+      let colores = [];
+      try {
+        colores = JSON.parse(agregar.dataset.colores || "[]");
+      } catch {
+        colores = [];
+      }
       const producto = {
         slug: agregar.dataset.agregar,
         titulo: agregar.dataset.titulo,
         color: agregar.dataset.color || "",
+        colores: Array.isArray(colores) ? colores : [],
         imagen: agregar.dataset.imagen || "",
       };
 
@@ -330,13 +349,13 @@ export function montarCarrito() {
         if (!talla.value.trim()) {
           talla.focus();
           talla.classList.add("campo-falta");
-          avisar("Escribe la talla de este par");
+          avisar("Elige la talla de este par");
           return;
         }
         if (!color.value.trim()) {
           color.focus();
           color.classList.add("campo-falta");
-          avisar("Escribe el color de este par");
+          avisar("Elige el color de este par");
           return;
         }
 
@@ -359,6 +378,7 @@ export function montarCarrito() {
         slug: linea.slug,
         titulo: linea.titulo,
         color: linea.colorReferencia,
+        colores: linea.colores?.length ? linea.colores : [linea.colorReferencia].filter(Boolean),
         imagen: linea.imagen,
       });
       return;

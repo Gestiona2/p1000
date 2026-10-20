@@ -1020,7 +1020,8 @@ h1, h2, h3, h4 {
   font-weight: 600;
   color: var(--tinta-suave);
 }
-.elegir-par input {
+.elegir-par input,
+.elegir-par select {
   width: 100%;
   border: 1px solid var(--borde);
   border-radius: 8px;
@@ -1030,7 +1031,8 @@ h1, h2, h3, h4 {
   color: var(--tinta);
   background: var(--fondo);
 }
-.elegir-par input:focus {
+.elegir-par input:focus,
+.elegir-par select:focus {
   outline: none;
   border-color: var(--turquesa);
   box-shadow: 0 0 0 3px rgba(1, 173, 177, 0.14);
@@ -1125,7 +1127,8 @@ h1, h2, h3, h4 {
   font-weight: 600;
   color: var(--tinta-suave);
 }
-.par-modal input {
+.par-modal input,
+.par-modal select {
   width: 100%;
   border: 1px solid var(--borde);
   border-radius: 9px;
@@ -1135,7 +1138,8 @@ h1, h2, h3, h4 {
   font-size: 0.92rem;
   color: var(--tinta);
 }
-.par-modal input:focus {
+.par-modal input:focus,
+.par-modal select:focus {
   outline: none;
   border-color: var(--turquesa);
   box-shadow: 0 0 0 3px rgba(1, 173, 177, 0.14);

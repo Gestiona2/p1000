@@ -10,6 +10,7 @@ interface Props {
     precio_antes?: number | null;
     marca?: string | null;
     color?: string | null;
+    colores?: string[];
     tallas?: string[];
     stock: boolean;
     destacado?: boolean;
@@ -23,6 +24,7 @@ const imagen = producto.imagenes?.[0] || "/img/placeholder.svg";
 const enlace = enlaceWhatsApp(sitio.whatsapp, mensajeProducto(producto));
 const url = `/calzado/${producto.slug}`;
 const promo = oferta(producto);
+const colores = [...new Set([...(producto.colores || []), producto.color].filter(Boolean))];
 const buscar = [producto.titulo, producto.marca, producto.color, producto.descripcion, ...(producto.tallas || [])]
   .filter(Boolean)
   .join(" ")
@@ -57,6 +59,7 @@ const buscar = [producto.titulo, producto.marca, producto.color, producto.descri
         data-agregar={producto.slug}
         data-titulo={producto.titulo}
         data-color={producto.color || ""}
+        data-colores={JSON.stringify(colores)}
         data-imagen={imagen.replace(/^\/+/, "")}
         aria-label={`Agregar ${producto.titulo} al pedido`}
       >

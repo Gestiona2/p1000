@@ -55,6 +55,8 @@ npm run build     # compilado en dist/
 
 Cada producto acepta `precio: null` (muestra «Precio por confirmar»), `tallas: []`
 (muestra «Por confirmar»), `marca`, `color` e `imagenes` (la primera es la principal).
+El campo `colores` es opcional: si existe, el select de color ofrece esas opciones; si no,
+se usa `color` como única opción. El cliente no puede escribir un color a mano.
 
 ### Descuentos, destacados y promoción flash
 

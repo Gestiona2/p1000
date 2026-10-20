@@ -6,6 +6,7 @@
 - [x] Cliente confirmó que, por ahora, 313 476 9855 sigue siendo el número de entrega.
 - [ ] Confirmar precio y regla de venta de cada referencia.
 - [ ] Confirmar tallas y disponibilidad reales.
+- [ ] Confirmar si alguna referencia tiene varios colores disponibles; hoy cada una tiene un solo color.
 - [x] Derechos de uso de las fotos confirmados por el cliente.
 - [ ] Dominio y hosting definitivos.
 - [x] Demo publicada en https://demos.emp2web.com/p1000/ (GitHub Pages).
@@ -31,6 +32,7 @@
 
 - [x] En calzado, pedir la **talla** al agregar un par (obligatoria).
 - [x] Si se piden varios pares, capturar **talla y color por cada par** en el carrito y en el mensaje de WhatsApp.
+- [x] El color se elige de una lista, no se escribe a mano. Si una referencia tiene varios colores, se agregan a `colores` y aparecen en el select.
 - [x] Elegir forma de entrega en el pedido: coordinar, domicilio o recogida.
 - [ ] Confirmar precio, tallas y disponibilidad reales para que el pedido deje de decir "por confirmar".
 

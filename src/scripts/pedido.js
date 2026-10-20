@@ -29,6 +29,7 @@ const copiarLinea = (linea) => ({
   titulo: linea.titulo,
   imagen: linea.imagen || "",
   colorReferencia: linea.colorReferencia || "",
+  colores: Array.isArray(linea.colores) ? [...linea.colores] : [],
   pares: linea.pares.map(copiarPar),
 });
 
@@ -52,6 +53,9 @@ export function crearPedido({ alCambiar = () => {} } = {}) {
           titulo: producto.titulo,
           imagen: producto.imagen || "",
           colorReferencia: producto.color || "",
+          colores: Array.isArray(producto.colores) && producto.colores.length
+            ? [...producto.colores]
+            : [producto.color].filter(Boolean),
           pares: [],
         };
         lineas.push(linea);
@@ -114,12 +118,17 @@ export function crearPedido({ alCambiar = () => {} } = {}) {
           const pares = Array.isArray(l.pares)
             ? l.pares.filter((par) => par && typeof par === "object").map(copiarPar)
             : [];
+          const colorReferencia = l.colorReferencia || l.color || "";
+          const colores = Array.isArray(l.colores) && l.colores.length
+            ? [...l.colores]
+            : [...new Set([colorReferencia, ...pares.map((par) => par.color)].filter(Boolean))];
           return pares.length
             ? {
                 slug: l.slug,
                 titulo: l.titulo,
                 imagen: l.imagen || "",
-                colorReferencia: l.colorReferencia || l.color || "",
+                colorReferencia,
+                colores,
                 pares,
               }
             : null;

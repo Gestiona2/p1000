@@ -22,6 +22,7 @@ const descripcion = `${producto.titulo}${producto.color ? ` en ${producto.color.
 const tallas = producto.tallas?.length ? producto.tallas.join(" · ") : null;
 const material = producto.material || null;
 const promo = oferta(producto);
+const colores = [...new Set([...(producto.colores || []), producto.color].filter(Boolean))];
 ---
 
 <Layout titulo={titulo} descripcion={descripcion} activa="calzado">
@@ -103,7 +104,11 @@ const promo = oferta(producto);
               <input name="talla" inputmode="numeric" maxlength="4" placeholder="Ej. 38" autocomplete="off">
             </label>
             <label>Color de este par
-              <input name="color" value={producto.color || ""} placeholder="Ej. Negro con franja clara" autocomplete="off">
+              <select name="color">
+                {colores.length > 0
+                  ? colores.map((color) => <option value={color} selected={color === producto.color}>{color}</option>)
+                  : <option value="">Por confirmar</option>}
+              </select>
             </label>
           </div>
           <p class="nota-par">Si vas a pedir varios pares, agrégalos uno por uno con su talla y color.</p>
@@ -115,6 +120,7 @@ const promo = oferta(producto);
             data-agregar={producto.slug}
             data-titulo={producto.titulo}
             data-color={producto.color || ""}
+            data-colores={JSON.stringify(colores)}
             data-imagen={imagenes[0].replace(/^\/+/, "")}
             data-form-par="formParDetalle"
           >
