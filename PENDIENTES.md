@@ -6,7 +6,8 @@
 - [ ] Confirmar precio y regla de venta de cada referencia.
 - [ ] Confirmar tallas y disponibilidad reales.
 - [ ] Revisar derechos de uso de las fotos (vienen de WhatsApp).
-- [ ] Dominio y hosting.
+- [ ] Dominio y hosting definitivos.
+- [x] Demo publicada en https://demos.emp2web.com/p1000/ (GitHub Pages).
 
 ## Contenido
 

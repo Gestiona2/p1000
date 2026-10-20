@@ -2,6 +2,8 @@
 
 Sitio de catálogo para la temporada navideña, con pedidos por WhatsApp.
 
+**Demo:** https://demos.emp2web.com/p1000/
+
 P1000 es el nombre de la tienda y su eslogan es **«Tu tienda, mil posibilidades»**.
 La identidad sale del manual de marca y de los vectores del logo entregados por el
 cliente (azul `#032F53`, turquesa `#01ADB1`, amarillo `#FBB73E`; Montserrat + Inter).
