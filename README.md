@@ -18,6 +18,16 @@ cliente (azul `#032F53`, turquesa `#01ADB1`, amarillo `#FBB73E`; Montserrat + In
 Los productos sin precio definido muestran **«Precio por confirmar»**, nunca un valor
 inventado.
 
+## Pedido por WhatsApp
+
+El carrito (panel lateral, contador en la cabecera) guarda las referencias en el
+navegador y las envía al WhatsApp **313 476 9855** con nombre, teléfono, ciudad,
+dirección y nota. No calcula totales porque los precios aún no están definidos: P1000
+confirma precio, tallas, disponibilidad y envío en el chat.
+
+Se puede cambiar el número en `src/datos/sitio.json` (`whatsapp`); el carrito lo toma
+del atributo `data-whatsapp` del panel, en `src/layouts/Layout.astro`.
+
 ## Desarrollo
 
 ```bash

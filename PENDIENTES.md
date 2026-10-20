@@ -2,7 +2,8 @@
 
 ## Bloqueantes para publicar
 
-- [ ] Número de WhatsApp real en `src/datos/sitio.json` (hoy `573000000000`).
+- [x] Número de WhatsApp inicial: **313 476 9855** (`573134769855`).
+- [ ] Confirmar si ese número sigue siendo el definitivo para la entrega.
 - [ ] Confirmar precio y regla de venta de cada referencia.
 - [ ] Confirmar tallas y disponibilidad reales.
 - [ ] Revisar derechos de uso de las fotos (vienen de WhatsApp).
@@ -16,6 +17,7 @@
 - [x] Armar galería de 4 fotos por referencia.
 - [x] Aplicar manual de marca: logo, colores, tipografías y eslogan.
 - [x] Crear una página de detalle por referencia con colores relacionados.
+- [x] Carrito lateral con cantidades y envío del pedido por WhatsApp.
 - [x] Renombrar lociones a perfumería.
 - [ ] Confirmar nombres oficiales de las 11 referencias.
 - [ ] Completar descripción y stock de cada producto.

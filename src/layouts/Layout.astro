@@ -20,7 +20,7 @@ const imagenSocial = new URL(`${base}/brand/isotipo.png`, origen).href;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" data-base={import.meta.env.BASE_URL}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -66,6 +66,15 @@ const imagenSocial = new URL(`${base}/brand/isotipo.png`, origen).href;
             </svg>
             Consultar
           </a>
+
+          <button class="btn-carrito" id="abrirCarrito" type="button" aria-label="Abrir el pedido" aria-controls="carrito">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6" />
+              <circle cx="10" cy="20" r="1.4" /><circle cx="18" cy="20" r="1.4" />
+            </svg>
+            <span class="carrito-globo" hidden>0</span>
+          </button>
+
           <button class="menu-boton" id="menuBoton" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">
             <span></span><span></span><span></span>
           </button>
@@ -106,11 +115,36 @@ const imagenSocial = new URL(`${base}/brand/isotipo.png`, origen).href;
       </div>
     </footer>
 
+    <div class="carrito-fondo" id="carritoFondo" hidden></div>
+    <aside
+      class="carrito"
+      id="carrito"
+      aria-label="Tu pedido"
+      aria-hidden="true"
+      data-whatsapp={sitio.whatsapp}
+      hidden
+    >
+      <header class="carrito-cabeza">
+        <h2>Tu pedido</h2>
+        <button type="button" id="cerrarCarrito" class="carrito-cerrar" aria-label="Cerrar el pedido">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+      </header>
+      <div class="carrito-cuerpo" id="carritoCuerpo"></div>
+    </aside>
+
     <a href={whatsapp} class="flota-wa" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M12 2a10 10 0 0 0-8.5 15.2L2 22l4.9-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1 1 12 20zm4.4-5.8c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.6.1a6.5 6.5 0 0 1-1.9-1.2 7.2 7.2 0 0 1-1.3-1.7c-.1-.2 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5s0-.4 0-.5-.6-1.4-.8-1.9-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.5 4 5.3 5.3 0 0 0 3.3.6 2.8 2.8 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.2-.2-.4-.3z" />
       </svg>
     </a>
+
+    <script>
+      import { montarCarrito } from "../scripts/carrito.js";
+      montarCarrito();
+    </script>
 
     <script is:inline>
       (function () {

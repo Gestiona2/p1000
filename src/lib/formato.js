@@ -13,8 +13,14 @@ export function precioTexto(producto) {
   return precioCOP(producto?.precio) ?? "Precio por confirmar";
 }
 
+export function numeroWhatsApp(numero) {
+  const digitos = String(numero || "").replace(/\D/g, "");
+  if (!digitos) return "";
+  return digitos.startsWith("57") ? digitos : `57${digitos}`;
+}
+
 export function enlaceWhatsApp(numero, mensaje) {
-  return `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+  return `https://wa.me/${numeroWhatsApp(numero)}?text=${encodeURIComponent(mensaje)}`;
 }
 
 export function mensajeProducto(producto) {
