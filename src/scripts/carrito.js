@@ -218,6 +218,11 @@ export function montarCarrito() {
     return [...new Set(lista.filter(Boolean))];
   }
 
+  function opcionesTalla(producto) {
+    const lista = Array.isArray(producto?.tallas) ? producto.tallas : [];
+    return [...new Set(lista.map((talla) => String(talla).trim()).filter(Boolean))];
+  }
+
   function abrirModal(producto) {
     if (!modal || !modalFondo || !formPar) return;
     productoModal = producto;
@@ -225,11 +230,16 @@ export function montarCarrito() {
     overflowPrevio = document.body.style.overflow;
 
     const colores = opcionesColor(producto);
+    const tallas = opcionesTalla(producto);
     tituloPar.textContent = producto.titulo || "Agregar al pedido";
-    refPar.textContent = colores.length > 1
-      ? "Elige la talla y el color disponibles para este par."
-      : "Elige la talla para este par.";
-    tallaPar.value = "";
+    const indicaciones = [];
+    if (!tallas.length) indicaciones.push("La talla se confirma por WhatsApp.");
+    if (colores.length > 1) indicaciones.push("Elige uno de los colores disponibles.");
+    refPar.textContent = indicaciones.join(" ") || "Elige la talla para este par.";
+    tallaPar.innerHTML = tallas.length
+      ? tallas.map((talla) => `<option value="${escapar(talla)}">${escapar(talla)}</option>`).join("")
+      : '<option value="Por confirmar">Por confirmar</option>';
+    tallaPar.value = tallas[0] || "Por confirmar";
     colorPar.innerHTML = colores.length
       ? colores.map((color) => `<option value="${escapar(color)}">${escapar(color)}</option>`).join("")
       : '<option value="">Por confirmar</option>';
@@ -259,7 +269,7 @@ export function montarCarrito() {
     if (!talla) {
       tallaPar.focus();
       tallaPar.classList.add("campo-falta");
-      avisar("Escribe la talla de este par");
+      avisar("Elige la talla de este par");
       return;
     }
     if (!color) {
@@ -270,7 +280,7 @@ export function montarCarrito() {
     }
 
     pedido.agregar(productoModal, { talla, color });
-    avisar(`Par talla ${talla} agregado`);
+    avisar(talla === "Por confirmar" ? "Par agregado; talla por confirmar" : `Par talla ${talla} agregado`);
     cerrarModal();
   }
 
@@ -315,6 +325,7 @@ export function montarCarrito() {
   formPar?.addEventListener("submit", agregarParDesdeModal);
   [tallaPar, colorPar].forEach((campo) => {
     campo?.addEventListener("input", () => campo.classList.remove("campo-falta"));
+    campo?.addEventListener("change", () => campo.classList.remove("campo-falta"));
   });
   document.getElementById("formParDetalle")?.querySelectorAll("input, select").forEach((campo) => {
     campo.addEventListener("input", () => campo.classList.remove("campo-falta"));
@@ -326,16 +337,20 @@ export function montarCarrito() {
     const agregar = evento.target.closest("[data-agregar]");
     if (agregar) {
       let colores = [];
+      let tallas = [];
       try {
         colores = JSON.parse(agregar.dataset.colores || "[]");
+        tallas = JSON.parse(agregar.dataset.tallas || "[]");
       } catch {
         colores = [];
+        tallas = [];
       }
       const producto = {
         slug: agregar.dataset.agregar,
         titulo: agregar.dataset.titulo,
         color: agregar.dataset.color || "",
         colores: Array.isArray(colores) ? colores : [],
+        tallas: Array.isArray(tallas) ? tallas : [],
         imagen: agregar.dataset.imagen || "",
       };
 
@@ -361,7 +376,7 @@ export function montarCarrito() {
 
         pedido.agregar(producto, { talla: talla.value, color: color.value });
         avisar(`Par talla ${talla.value.trim()} agregado`);
-        talla.value = "";
+        talla.value = talla.options[0]?.value || "";
         talla.focus();
         return;
       }
@@ -379,6 +394,7 @@ export function montarCarrito() {
         titulo: linea.titulo,
         color: linea.colorReferencia,
         colores: linea.colores?.length ? linea.colores : [linea.colorReferencia].filter(Boolean),
+        tallas: linea.tallas?.length ? linea.tallas : [],
         imagen: linea.imagen,
       });
       return;

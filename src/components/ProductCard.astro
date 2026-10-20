@@ -25,6 +25,7 @@ const enlace = enlaceWhatsApp(sitio.whatsapp, mensajeProducto(producto));
 const url = `/calzado/${producto.slug}`;
 const promo = oferta(producto);
 const colores = [...new Set([...(producto.colores || []), producto.color].filter(Boolean))];
+const tallas = Array.isArray(producto.tallas) ? producto.tallas : [];
 const buscar = [producto.titulo, producto.marca, producto.color, producto.descripcion, ...(producto.tallas || [])]
   .filter(Boolean)
   .join(" ")
@@ -60,6 +61,7 @@ const buscar = [producto.titulo, producto.marca, producto.color, producto.descri
         data-titulo={producto.titulo}
         data-color={producto.color || ""}
         data-colores={JSON.stringify(colores)}
+        data-tallas={JSON.stringify(tallas)}
         data-imagen={imagen.replace(/^\/+/, "")}
         aria-label={`Agregar ${producto.titulo} al pedido`}
       >

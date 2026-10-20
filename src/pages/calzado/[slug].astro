@@ -23,6 +23,7 @@ const tallas = producto.tallas?.length ? producto.tallas.join(" · ") : null;
 const material = producto.material || null;
 const promo = oferta(producto);
 const colores = [...new Set([...(producto.colores || []), producto.color].filter(Boolean))];
+const opcionesTalla = Array.isArray(producto.tallas) ? producto.tallas : [];
 ---
 
 <Layout titulo={titulo} descripcion={descripcion} activa="calzado">
@@ -101,7 +102,11 @@ const colores = [...new Set([...(producto.colores || []), producto.color].filter
         <div class="acciones-detalle">
           <div class="elegir-par" id="formParDetalle">
             <label>Talla de este par
-              <input name="talla" inputmode="numeric" maxlength="4" placeholder="Ej. 38" autocomplete="off">
+              <select name="talla">
+                {opcionesTalla.length > 0
+                  ? opcionesTalla.map((talla) => <option value={talla}>{talla}</option>)
+                  : <option value="Por confirmar">Por confirmar</option>}
+              </select>
             </label>
             <label>Color de este par
               <select name="color">
@@ -111,7 +116,11 @@ const colores = [...new Set([...(producto.colores || []), producto.color].filter
               </select>
             </label>
           </div>
-          <p class="nota-par">Si vas a pedir varios pares, agrégalos uno por uno con su talla y color.</p>
+          <p class="nota-par">
+            {opcionesTalla.length > 0
+              ? "Elige la talla y el color de cada par. Si vas a pedir varios, agrégalos uno por uno."
+              : "Todavía no tenemos las tallas cargadas: el pedido queda como “por confirmar” y se acuerda por WhatsApp."}
+          </p>
 
           <button
             type="button"
@@ -121,6 +130,7 @@ const colores = [...new Set([...(producto.colores || []), producto.color].filter
             data-titulo={producto.titulo}
             data-color={producto.color || ""}
             data-colores={JSON.stringify(colores)}
+            data-tallas={JSON.stringify(opcionesTalla)}
             data-imagen={imagenes[0].replace(/^\/+/, "")}
             data-form-par="formParDetalle"
           >

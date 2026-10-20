@@ -36,6 +36,7 @@ const items = productos
       descuento,
       ahorro,
       colores: [...new Set([...(producto.colores || []), producto.color].filter(Boolean))],
+      tallas: Array.isArray(producto.tallas) ? producto.tallas : [],
       foto: enlace(producto.imagenes[0].replace(/^\/+/, "")),
       detalle: enlace(`calzado/${producto.slug}`),
       vigencia: vigencia(producto.promo_flash_vence),
@@ -100,6 +101,7 @@ const items = productos
                     data-titulo={producto.titulo}
                     data-color={producto.color || ""}
                     data-colores={JSON.stringify(producto.colores)}
+                    data-tallas={JSON.stringify(producto.tallas)}
                     data-imagen={producto.imagenes[0].replace(/^\/+/, "")}
                   >
                     Agregar al pedido

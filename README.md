@@ -58,6 +58,10 @@ Cada producto acepta `precio: null` (muestra «Precio por confirmar»), `tallas:
 El campo `colores` es opcional: si existe, el select de color ofrece esas opciones; si no,
 se usa `color` como única opción. El cliente no puede escribir un color a mano.
 
+La talla también es un select alimentado por `tallas`. Si `tallas` está vacío, la única
+opción es «Por confirmar» y el pedido se acuerda por WhatsApp; al cargar las tallas
+reales (por Excel o en el JSON), aparecen como opciones.
+
 ### Descuentos, destacados y promoción flash
 
 - El descuento **no se escribe**: se calcula si `precio_antes > precio > 0`.

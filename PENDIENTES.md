@@ -30,9 +30,10 @@
 
 ## Carrito y pedidos
 
-- [x] En calzado, pedir la **talla** al agregar un par (obligatoria).
+- [x] En calzado, pedir la **talla** al agregar un par desde una lista de tallas disponibles.
 - [x] Si se piden varios pares, capturar **talla y color por cada par** en el carrito y en el mensaje de WhatsApp.
 - [x] El color se elige de una lista, no se escribe a mano. Si una referencia tiene varios colores, se agregan a `colores` y aparecen en el select.
+- [x] La talla se elige de una lista. Si la referencia no tiene tallas cargadas, queda como “Por confirmar” y se acuerda por WhatsApp.
 - [x] Elegir forma de entrega en el pedido: coordinar, domicilio o recogida.
 - [ ] Confirmar precio, tallas y disponibilidad reales para que el pedido deje de decir "por confirmar".
 
