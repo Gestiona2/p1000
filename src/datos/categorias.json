@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "calzado",
+    "nombre": "Calzado nacional",
+    "corto": "Calzado",
+    "titulo": "Calzado nacional",
+    "descripcion": "Referencias de calzado para toda la familia. Consulta tallas, precio y disponibilidad por WhatsApp.",
+    "imagen": "/img/categorias/calzado.svg",
+    "orden": 1,
+    "activo": true
+  },
+  {
+    "slug": "perfumeria",
+    "nombre": "Perfumería árabe",
+    "corto": "Perfumería",
+    "titulo": "Perfumería árabe",
+    "descripcion": "Fragancias para hombre y mujer. Consulta presentaciones y disponibilidad.",
+    "imagen": "/img/categorias/perfumeria.svg",
+    "orden": 2,
+    "activo": false
+  },
+  {
+    "slug": "ropa-ninos",
+    "nombre": "Ropa infantil",
+    "corto": "Ropa niños",
+    "titulo": "Ropa infantil",
+    "descripcion": "Prendas por tallas para niñas y niños. Consulta disponibilidad.",
+    "imagen": "/img/categorias/ropa-ninos.svg",
+    "orden": 3,
+    "activo": false
+  },
+  {
+    "slug": "jugueteria",
+    "nombre": "Juguetería",
+    "corto": "Juguetería",
+    "titulo": "Juguetería",
+    "descripcion": "Juguetes y detalles para la temporada. Consulta disponibilidad.",
+    "imagen": "/img/categorias/jugueteria.svg",
+    "orden": 4,
+    "activo": false
+  }
+]

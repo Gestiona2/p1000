@@ -1,0 +1,19 @@
+{
+  "nombre": "P1000",
+  "eslogan": "Tu tienda, mil posibilidades.",
+  "descripcion": "P1000 · Calzado nacional, perfumería árabe, ropa infantil y juguetería. Catálogos de temporada con atención y pedidos por WhatsApp.",
+  "whatsapp": "573000000000",
+  "whatsappVisible": "300 000 0000",
+  "instagram": "",
+  "direccion": "",
+  "horario": "",
+  "moneda": "COP",
+  "indexar": false,
+  "menu": [
+    { "texto": "Inicio", "href": "/" },
+    { "texto": "Calzado", "href": "/calzado" },
+    { "texto": "Perfumería", "href": "/perfumeria" },
+    { "texto": "Ropa niños", "href": "/ropa-ninos" },
+    { "texto": "Juguetería", "href": "/jugueteria" }
+  ]
+}

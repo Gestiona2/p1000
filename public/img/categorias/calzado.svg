@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-label="Calzado">
+  <rect width="640" height="420" fill="#f6fafb"/>
+  <circle cx="486" cy="126" r="86" fill="#eaf5f7"/>
+  <path d="M110 290c0-30 18-48 46-58l70-26 38-74c8-16 22-24 40-24 22 0 36 14 42 40l12 52 118 38c34 11 54 34 54 66v18H110z" fill="#032f53"/>
+  <path d="M110 318h420v18H110z" fill="#01adb1"/>
+  <path d="M264 132l30 58" stroke="#ffffff" stroke-width="10" stroke-linecap="round"/>
+  <path d="M292 122l32 62" stroke="#ffffff" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="486" cy="128" r="8" fill="#fbb73e"/>
+  <circle cx="524" cy="104" r="5" fill="#fbb73e"/>
+</svg>

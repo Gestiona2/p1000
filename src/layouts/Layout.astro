@@ -1,0 +1,133 @@
+---
+import "../styles/global.css";
+import sitio from "../datos/sitio.json";
+import categorias from "../datos/categorias.json";
+import { enlaceWhatsApp } from "../lib/formato.js";
+
+interface Props {
+  titulo: string;
+  descripcion?: string;
+  activa?: string;
+}
+
+const { titulo, descripcion = sitio.descripcion, activa = "" } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const ruta = Astro.url.pathname.replace(/\/$/, "") || "/";
+const origen = Astro.site ?? Astro.url;
+const canonica = new URL(Astro.url.pathname, origen).href;
+const whatsapp = enlaceWhatsApp(sitio.whatsapp, "Hola P1000, quiero hacer un pedido.");
+const imagenSocial = new URL(`${base}/brand/isotipo.png`, origen).href;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titulo}</title>
+    <meta name="description" content={descripcion} />
+    <link rel="icon" href="/brand/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/brand/favicon.png" />
+    <link rel="canonical" href={canonica} />
+    {sitio.indexar === false
+      ? <meta name="robots" content="noindex, nofollow" />
+      : null}
+
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonica} />
+    <meta property="og:image" content={imagenSocial} />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:site_name" content={sitio.nombre} />
+    <meta name="theme-color" content="#032F53" />
+  </head>
+
+  <body>
+    <header class="cabecera">
+      <div class="envoltura cabecera-inner">
+        <a href="/" class="logo" aria-label="P1000, inicio">
+          <img src="/brand/logo.svg" alt="P1000" width="2172" height="724" />
+        </a>
+
+        <nav class="nav" id="nav" aria-label="Navegación principal">
+          <a href="/" class={ruta === "/" ? "activo" : ""}>Inicio</a>
+          {categorias.map((c) => (
+            <a href={`/${c.slug}`} class={ruta === `/${c.slug}` || ruta.startsWith(`/${c.slug}/`) ? "activo" : ""}>
+              {c.corto}
+            </a>
+          ))}
+        </nav>
+
+        <div class="cabecera-cta">
+          <a href={whatsapp} class="btn btn-turquesa" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2a10 10 0 0 0-8.5 15.2L2 22l4.9-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1 1 12 20zm4.4-5.8c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.6.1a6.5 6.5 0 0 1-1.9-1.2 7.2 7.2 0 0 1-1.3-1.7c-.1-.2 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5s0-.4 0-.5-.6-1.4-.8-1.9-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.5 4 5.3 5.3 0 0 0 3.3.6 2.8 2.8 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.2-.2-.4-.3z" />
+            </svg>
+            Consultar
+          </a>
+          <button class="menu-boton" id="menuBoton" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="pie">
+      <div class="envoltura">
+        <div class="pie-inner">
+          <div>
+            <img src="/brand/logo-blanco.svg" alt="P1000" width="2172" height="724" />
+            <p class="pie-eslogan">{sitio.eslogan}</p>
+          </div>
+
+          <div>
+            <h4>Catálogos</h4>
+            {categorias.map((c) => <a href={`/${c.slug}`}>{c.nombre}</a>)}
+          </div>
+
+          <div>
+            <h4>Contacto</h4>
+            <a href={whatsapp} target="_blank" rel="noopener">WhatsApp {sitio.whatsappVisible}</a>
+            {sitio.horario && <p>{sitio.horario}</p>}
+            {sitio.direccion && <p>{sitio.direccion}</p>}
+            <p class="pie-nota">Atención y acompañamiento por WhatsApp.</p>
+          </div>
+        </div>
+
+        <div class="pie-final">
+          <span>&copy; {new Date().getFullYear()} {sitio.nombre}</span>
+          <span>Precios y disponibilidad se confirman por WhatsApp.</span>
+        </div>
+      </div>
+    </footer>
+
+    <a href={whatsapp} class="flota-wa" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 2a10 10 0 0 0-8.5 15.2L2 22l4.9-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1 1 12 20zm4.4-5.8c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.6.1a6.5 6.5 0 0 1-1.9-1.2 7.2 7.2 0 0 1-1.3-1.7c-.1-.2 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5s0-.4 0-.5-.6-1.4-.8-1.9-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.5 4 5.3 5.3 0 0 0 3.3.6 2.8 2.8 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.2-.2-.4-.3z" />
+      </svg>
+    </a>
+
+    <script is:inline>
+      (function () {
+        var boton = document.getElementById("menuBoton");
+        var nav = document.getElementById("nav");
+        if (!boton || !nav) return;
+        boton.addEventListener("click", function () {
+          var abierto = nav.classList.toggle("abierto");
+          boton.setAttribute("aria-expanded", String(abierto));
+        });
+        nav.addEventListener("click", function (e) {
+          if (e.target.tagName === "A") {
+            nav.classList.remove("abierto");
+            boton.setAttribute("aria-expanded", "false");
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

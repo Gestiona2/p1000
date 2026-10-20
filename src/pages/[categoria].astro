@@ -1,0 +1,118 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ProductCard from "../components/ProductCard.astro";
+import categorias from "../datos/categorias.json";
+import productos from "../datos/productos.json";
+import sitio from "../datos/sitio.json";
+import { enlaceWhatsApp } from "../lib/formato.js";
+
+export function getStaticPaths() {
+  return categorias.map((categoria) => ({
+    params: { categoria: categoria.slug },
+    props: { categoria },
+  }));
+}
+
+const { categoria } = Astro.props;
+const lista = productos.filter((p) => p.categoria === categoria.slug);
+const whatsapp = enlaceWhatsApp(
+  sitio.whatsapp,
+  `Hola P1000, quiero información del catálogo de ${categoria.nombre}.`
+);
+const titulo = `${categoria.nombre} · P1000`;
+---
+
+<Layout titulo={titulo} descripcion={categoria.descripcion} activa={categoria.slug}>
+  <header class="catalogo-cabecera">
+    <div class="envoltura">
+      <nav class="migas" aria-label="Ruta">
+        <a href="/">Inicio</a>
+        <span>/</span>
+        <span>{categoria.nombre}</span>
+      </nav>
+      <span class="eyebrow">Catálogo</span>
+      <h1>{categoria.titulo}</h1>
+      <p>{categoria.descripcion}</p>
+
+      {lista.length > 0 && (
+        <div class="barra-busqueda">
+          <label class="campo-busqueda">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-3.5-3.5"></path>
+            </svg>
+            <input
+              type="search"
+              id="buscador"
+              placeholder={`Buscar en ${categoria.corto.toLowerCase()}…`}
+              aria-label={`Buscar productos en ${categoria.nombre}`}
+            />
+          </label>
+          <span class="contador" id="contador">{lista.length} referencias</span>
+        </div>
+      )}
+    </div>
+  </header>
+
+  <div class="envoltura">
+    {lista.length > 0 ? (
+      <>
+        <div class="grid-productos" id="grid">
+          {lista.map((producto) => <ProductCard producto={producto} />)}
+        </div>
+        <div class="vacio" id="sinResultados" hidden>
+          <h2>No encontramos esa referencia</h2>
+          <p>Prueba con otra palabra o escríbenos y la buscamos por ti.</p>
+          <a href={whatsapp} class="btn btn-turquesa" target="_blank" rel="noopener">Preguntar por WhatsApp</a>
+        </div>
+      </>
+    ) : (
+      <div class="grid-productos" style="grid-template-columns:1fr">
+        <div class="vacio">
+          <h2>Estamos montando este catálogo</h2>
+          <p>
+            Ya tenemos el espacio listo. En cuanto lleguen las fotos y las referencias,
+            los productos aparecen aquí.
+          </p>
+          <a href={whatsapp} class="btn btn-turquesa" target="_blank" rel="noopener">
+            Preguntar disponibilidad
+          </a>
+        </div>
+      </div>
+    )}
+  </div>
+</Layout>
+
+<script is:inline>
+  (function () {
+    var input = document.getElementById("buscador");
+    var grid = document.getElementById("grid");
+    var contador = document.getElementById("contador");
+    var vacio = document.getElementById("sinResultados");
+    if (!input || !grid) return;
+
+    var tarjetas = Array.prototype.slice.call(grid.querySelectorAll("[data-producto]"));
+
+    function normalizar(texto) {
+      return (texto || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function filtrar() {
+      var consulta = normalizar(input.value.trim());
+      var visibles = 0;
+      tarjetas.forEach(function (tarjeta) {
+        var coincide = !consulta || normalizar(tarjeta.dataset.buscar).indexOf(consulta) !== -1;
+        tarjeta.hidden = !coincide;
+        if (coincide) visibles++;
+      });
+      contador.textContent = visibles + (visibles === 1 ? " referencia" : " referencias");
+      vacio.hidden = visibles !== 0;
+      grid.hidden = visibles === 0;
+    }
+
+    input.addEventListener("input", filtrar);
+  })();
+</script>

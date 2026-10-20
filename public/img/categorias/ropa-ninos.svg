@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-label="Ropa para niños">
+  <rect width="640" height="420" fill="#f6fafb"/>
+  <circle cx="470" cy="290" r="96" fill="#eaf5f7"/>
+  <path d="M240 128l-56 34 34 60 30-16v164h124V206l30 16 34-60-56-34-40 12h-60z" fill="#01adb1"/>
+  <path d="M290 128c0 20 14 34 30 34s30-14 30-34" fill="none" stroke="#f6fafb" stroke-width="10"/>
+  <circle cx="320" cy="250" r="26" fill="#fbb73e"/>
+  <circle cx="430" cy="140" r="7" fill="#032f53"/>
+</svg>

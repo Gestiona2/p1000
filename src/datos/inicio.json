@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "titulo": "P1000 · Tu tienda, mil posibilidades",
+    "descripcion": "Calzado nacional, perfumería árabe, ropa infantil y juguetería. Catálogos de temporada con atención y pedidos por WhatsApp."
+  },
+  "portada": {
+    "encabezado": "Temporada navideña",
+    "titulo": "Tu tienda,",
+    "tituloAcento": "mil posibilidades",
+    "texto": "Calzado, perfumería, ropa infantil y juguetes en un solo lugar. Mira el catálogo, elige lo que te guste y consúltanos por WhatsApp.",
+    "botonPrincipal": { "texto": "Ver calzado", "href": "/calzado" },
+    "botonSecundario": { "texto": "Cómo comprar", "href": "#como-comprar" },
+    "sello": "4 catálogos",
+    "selloTexto": "de temporada"
+  },
+  "categorias": {
+    "encabezado": "Catálogos",
+    "titulo": "Encuentra tu próximo favorito",
+    "texto": "Cada temporada trae productos distintos. Entra a la categoría que buscas y consulta disponibilidad."
+  },
+  "comoComprar": {
+    "encabezado": "Cómo comprar",
+    "titulo": "Fácil, claro y con acompañamiento",
+    "pasos": [
+      { "titulo": "Explora el catálogo", "texto": "Entra a la categoría, revisa las fotos y mira los detalles de cada referencia." },
+      { "titulo": "Consulta por WhatsApp", "texto": "Escríbenos con el producto que te gusta. Confirmamos tallas, precio y disponibilidad." },
+      { "titulo": "Recibe tu pedido", "texto": "Acordamos entrega y forma de pago por el mismo chat, sin complicaciones." }
+    ]
+  },
+  "aviso": "Los precios, tallas y la disponibilidad se confirman por WhatsApp antes de cerrar el pedido."
+}

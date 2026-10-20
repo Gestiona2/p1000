@@ -1,0 +1,321 @@
+[
+  {
+    "slug": "puma-negra-franja",
+    "titulo": "Puma negra con franja",
+    "precio": null,
+    "precio_antes": null,
+    "categoria": "calzado",
+    "marca": "Puma",
+    "color": "Negro con franja clara",
+    "modelo": null,
+    "material": null,
+    "tallas": [],
+    "stock": true,
+    "destacado": false,
+    "imagenes": [
+      "/img/productos/puma-negra-franja.webp",
+      "/img/productos/puma-negra-franja-2.webp",
+      "/img/productos/puma-negra-franja-3.webp",
+      "/img/productos/puma-negra-franja-4.webp"
+    ],
+    "descripcion": "Calzado tipo tenis en negro con franja clara. Consulta tallas, material y disponibilidad por WhatsApp.",
+    "origen": {
+      "titulo": "inferido",
+      "color": "revisado",
+      "tallas": "pendiente",
+      "precio": "pendiente",
+      "material": "pendiente",
+      "imagen": "revisado"
+    }
+  },
+  {
+    "slug": "puma-negra",
+    "titulo": "Puma negra",
+    "precio": null,
+    "precio_antes": null,
+    "categoria": "calzado",
+    "marca": "Puma",
+    "color": "Negro total",
+    "modelo": null,
+    "material": null,
+    "tallas": [],
+    "stock": true,
+    "destacado": false,
+    "imagenes": [
+      "/img/productos/puma-negra.webp",
+      "/img/productos/puma-negra-2.webp",
+      "/img/productos/puma-negra-3.webp",
+      "/img/productos/puma-negra-4.webp"
+    ],
+    "descripcion": "Calzado tipo tenis en negro total. Consulta tallas, material y disponibilidad por WhatsApp.",
+    "origen": {
+      "titulo": "inferido",
+      "color": "revisado",
+      "tallas": "pendiente",
+      "precio": "pendiente",
+      "material": "pendiente",
+      "imagen": "revisado"
+    }
+  },
+  {
+    "slug": "puma-azul",
+    "titulo": "Puma azul",
+    "precio": null,
+    "precio_antes": null,
+    "categoria": "calzado",
+    "marca": "Puma",
+    "color": "Azul con blanco",
+    "modelo": null,
+    "material": null,
+    "tallas": [],
+    "stock": true,
+    "destacado": false,
+    "imagenes": [
+      "/img/productos/puma-azul.webp",
+      "/img/productos/puma-azul-2.webp",
+      "/img/productos/puma-azul-3.webp",
+      "/img/productos/puma-azul-4.webp"
+    ],
+    "descripcion": "Calzado tipo tenis en azul con detalles blancos. Consulta tallas, material y disponibilidad por WhatsApp.",
+    "origen": {
+      "titulo": "inferido",
+      "color": "revisado",
+      "tallas": "pendiente",
+      "precio": "pendiente",
+      "material": "pendiente",
+      "imagen": "revisado"
+    }
+  },
+  {
+    "slug": "puma-roja",
+    "titulo": "Puma roja",
+    "precio": null,
+    "precio_antes": null,
+    "categoria": "calzado",
+    "marca": "Puma",
+    "color": "Rojo con blanco",
+    "modelo": null,
+    "material": null,
+    "tallas": [],
+    "stock": true,
+    "destacado": false,
+    "imagenes": [
+      "/img/productos/puma-roja.webp",
+      "/img/productos/puma-roja-2.webp",
+      "/img/productos/puma-roja-3.webp",
+      "/img/productos/puma-roja-4.webp"
+    ],
+    "descripcion": "Calzado tipo tenis en rojo con detalles blancos. Consulta tallas, material y disponibilidad por WhatsApp.",
+    "origen": {
+      "titulo": "inferido",
+      "color": "revisado",
+      "tallas": "pendiente",
+      "precio": "pendiente",
+      "material": "pendiente",
+      "imagen": "revisado"
+    }
+  },
+  {
+    "slug": "puma-blanca",
+    "titulo": "Puma blanca",
+    "precio": null,
+    "precio_antes": null,
+    "categoria": "calzado",
+    "marca": "Puma",
+    "color": "Blanco",
+    "modelo": null,
+    "material": null,
+    "tallas": [],
+    "stock": true,
+    "destacado": false,
+    "imagenes": [
+      "/img/productos/puma-blanca.webp",
+      "/img/productos/puma-blanca-2.webp",
+      "/img/productos/puma-blanca-3.webp",
+      "/img/productos/puma-blanca-4.webp"
+    ],
+    "descripcion": "Calzado tipo tenis en blanco. Consulta tallas, material y disponibilidad por WhatsApp.",
+    "origen": {
+      "titulo": "inferido",
+      "color": "revisado",
+      "tallas": "pendiente",
+      "precio": "pendiente",
+      "material": "pendiente",
+      "imagen": "revisado"
+    }
+  },
+  {
+    "slug": "bmw-blanca",
+    "titulo": "BMW blanca",
+    "precio": null,
+    "precio_antes": null,
+    "categoria": "calzado",
+    "marca": "BMW",
+    "color": "Blanco con azul",
+    "modelo": null,
+    "material": null,
+    "tallas": [],
+    "stock": true,
+    "destacado": false,
+    "imagenes": [
+      "/img/productos/bmw-blanca.webp",
+      "/img/productos/bmw-blanca-2.webp",
+      "/img/productos/bmw-blanca-3.webp",
+      "/img/productos/bmw-blanca-4.webp"
+    ],
+    "descripcion": "Calzado tipo tenis en blanco con detalles azules. Consulta tallas, material y disponibilidad por WhatsApp.",
+    "origen": {
+      "titulo": "inferido",
+      "color": "revisado",
+      "tallas": "pendiente",
+      "precio": "pendiente",
+      "material": "pendiente",
+      "imagen": "revisado"
+    }
+  },
+  {
+    "slug": "bmw-gris",
+    "titulo": "BMW gris",
+    "precio": null,
+    "precio_antes": null,
+    "categoria": "calzado",
+    "marca": "BMW",
+    "color": "Gris con azul",
+    "modelo": null,
+    "material": null,
+    "tallas": [],
+    "stock": true,
+    "destacado": false,
+    "imagenes": [
+      "/img/productos/bmw-gris.webp",
+      "/img/productos/bmw-gris-2.webp",
+      "/img/productos/bmw-gris-3.webp",
+      "/img/productos/bmw-gris-4.webp"
+    ],
+    "descripcion": "Calzado tipo tenis en gris con detalles azules. Consulta tallas, material y disponibilidad por WhatsApp.",
+    "origen": {
+      "titulo": "inferido",
+      "color": "revisado",
+      "tallas": "pendiente",
+      "precio": "pendiente",
+      "material": "pendiente",
+      "imagen": "revisado"
+    }
+  },
+  {
+    "slug": "bmw-negra",
+    "titulo": "BMW negra",
+    "precio": null,
+    "precio_antes": null,
+    "categoria": "calzado",
+    "marca": "BMW",
+    "color": "Negro con detalles claros",
+    "modelo": null,
+    "material": null,
+    "tallas": [],
+    "stock": true,
+    "destacado": false,
+    "imagenes": [
+      "/img/productos/bmw-negra.webp",
+      "/img/productos/bmw-negra-2.webp",
+      "/img/productos/bmw-negra-3.webp",
+      "/img/productos/bmw-negra-4.webp"
+    ],
+    "descripcion": "Calzado tipo tenis en negro con detalles claros. Consulta tallas, material y disponibilidad por WhatsApp.",
+    "origen": {
+      "titulo": "inferido",
+      "color": "revisado",
+      "tallas": "pendiente",
+      "precio": "pendiente",
+      "material": "pendiente",
+      "imagen": "revisado"
+    }
+  },
+  {
+    "slug": "ferrari-blanca",
+    "titulo": "Ferrari blanca",
+    "precio": null,
+    "precio_antes": null,
+    "categoria": "calzado",
+    "marca": "Ferrari",
+    "color": "Blanco con rojo",
+    "modelo": null,
+    "material": null,
+    "tallas": [],
+    "stock": true,
+    "destacado": false,
+    "imagenes": [
+      "/img/productos/ferrari-blanca.webp",
+      "/img/productos/ferrari-blanca-2.webp",
+      "/img/productos/ferrari-blanca-3.webp",
+      "/img/productos/ferrari-blanca-4.webp"
+    ],
+    "descripcion": "Calzado tipo tenis en blanco con detalles rojos. Consulta tallas, material y disponibilidad por WhatsApp.",
+    "origen": {
+      "titulo": "inferido",
+      "color": "revisado",
+      "tallas": "pendiente",
+      "precio": "pendiente",
+      "material": "pendiente",
+      "imagen": "revisado"
+    }
+  },
+  {
+    "slug": "ferrari-gris",
+    "titulo": "Ferrari gris",
+    "precio": null,
+    "precio_antes": null,
+    "categoria": "calzado",
+    "marca": "Ferrari",
+    "color": "Gris con rojo",
+    "modelo": null,
+    "material": null,
+    "tallas": [],
+    "stock": true,
+    "destacado": false,
+    "imagenes": [
+      "/img/productos/ferrari-gris.webp",
+      "/img/productos/ferrari-gris-2.webp",
+      "/img/productos/ferrari-gris-3.webp",
+      "/img/productos/ferrari-gris-4.webp"
+    ],
+    "descripcion": "Calzado tipo tenis en gris con detalles rojos. Consulta tallas, material y disponibilidad por WhatsApp.",
+    "origen": {
+      "titulo": "inferido",
+      "color": "revisado",
+      "tallas": "pendiente",
+      "precio": "pendiente",
+      "material": "pendiente",
+      "imagen": "revisado"
+    }
+  },
+  {
+    "slug": "ferrari-negra",
+    "titulo": "Ferrari negra",
+    "precio": null,
+    "precio_antes": null,
+    "categoria": "calzado",
+    "marca": "Ferrari",
+    "color": "Negro con rojo",
+    "modelo": null,
+    "material": null,
+    "tallas": [],
+    "stock": true,
+    "destacado": false,
+    "imagenes": [
+      "/img/productos/ferrari-negra.webp",
+      "/img/productos/ferrari-negra-2.webp",
+      "/img/productos/ferrari-negra-3.webp",
+      "/img/productos/ferrari-negra-4.webp"
+    ],
+    "descripcion": "Calzado tipo tenis en negro con detalles rojos. Consulta tallas, material y disponibilidad por WhatsApp.",
+    "origen": {
+      "titulo": "inferido",
+      "color": "revisado",
+      "tallas": "pendiente",
+      "precio": "pendiente",
+      "material": "pendiente",
+      "imagen": "revisado"
+    }
+  }
+]

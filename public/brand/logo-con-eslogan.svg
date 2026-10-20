@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="440" viewBox="0 0 1600 440" role="img" aria-labelledby="title desc">
+  <title id="title">P1000 — Tu tienda, mil posibilidades</title>
+  <desc id="desc">Logo horizontal plano de P1000 con símbolo geométrico en azul profundo, turquesa y amarillo, y eslogan en azul profundo.</desc>
+  <rect width="1600" height="440" fill="#FFFFFF"/>
+
+  <!-- Símbolo propietario: P geométrica formada por tres planos sólidos -->
+  <g transform="translate(42 48)">
+    <path d="M18 124 L108 28 L310 28 C369 28 411 69 411 126 C411 185 369 226 310 226 L236 226 L236 344 C236 366 219 383 197 383 L96 383 L96 222 L18 222 Z" fill="#0B2D4F"/>
+    <path d="M263 28 L310 28 C369 28 411 69 411 126 C411 185 369 226 310 226 L236 226 L236 344 C236 366 219 383 197 383 L161 383 L161 226 L310 226 C352 226 380 198 380 157 C380 116 352 88 310 88 L263 88 Z" fill="#00A896"/>
+    <path d="M95 226 L230 226 L128 328 L96 328 L96 222 L18 222 L18 124 L108 28 L192 28 L95 125 Z" fill="#F4B942"/>
+    <!-- recorte blanco para dar lectura limpia al pliegue -->
+    <path d="M96 222 L236 222 L161 297 L161 383 L96 383 Z" fill="#00A896"/>
+  </g>
+
+  <!-- Logotipo -->
+  <g fill="#0B2D4F">
+    <text x="490" y="250" font-family="Arial, Helvetica, sans-serif" font-size="226" font-weight="800" letter-spacing="-10">P</text>
+    <text x="652" y="250" font-family="Arial, Helvetica, sans-serif" font-size="226" font-weight="800" letter-spacing="-10" fill="#00A896">1</text>
+    <text x="756" y="250" font-family="Arial, Helvetica, sans-serif" font-size="226" font-weight="800" letter-spacing="-10">000</text>
+  </g>
+
+  <!-- Eslogan -->
+  <text x="494" y="327" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="500" letter-spacing="8.5" fill="#0B2D4F">TU TIENDA, MIL POSIBILIDADES</text>
+</svg>

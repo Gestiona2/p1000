@@ -1,0 +1,93 @@
+---
+import Layout from "../layouts/Layout.astro";
+import datos from "../datos/inicio.json";
+import sitio from "../datos/sitio.json";
+import categorias from "../datos/categorias.json";
+import productos from "../datos/productos.json";
+import { enlaceWhatsApp } from "../lib/formato.js";
+
+const { portada, categorias: bloqueCategorias, comoComprar, aviso } = datos;
+const whatsapp = enlaceWhatsApp(sitio.whatsapp, "Hola P1000, quiero hacer un pedido.");
+const conteo = (slug) => productos.filter((p) => p.categoria === slug && p.stock).length;
+const ordenadas = [...categorias].sort((a, b) => a.orden - b.orden);
+---
+
+<Layout titulo={datos.meta.titulo} descripcion={datos.meta.descripcion} activa="inicio">
+  <header class="portada">
+    <div class="envoltura portada-inner">
+      <div>
+        <span class="eyebrow">{portada.encabezado}</span>
+        <h1>{portada.titulo}<span>{portada.tituloAcento}</span></h1>
+        <p>{portada.texto}</p>
+        <div class="portada-botones">
+          <a href={portada.botonPrincipal.href} class="btn btn-amarillo">{portada.botonPrincipal.texto}</a>
+          <a href={portada.botonSecundario.href} class="btn btn-claro">{portada.botonSecundario.texto}</a>
+        </div>
+      </div>
+
+      <div class="portada-visual">
+        <img src="/brand/isotipo.svg" alt="Símbolo de P1000" width="512" height="512" />
+        <div class="portada-datos" aria-label={`${portada.sello} ${portada.selloTexto}`}>
+          <strong>{portada.sello}</strong>
+          <span>{portada.selloTexto}</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="seccion" id="catalogos">
+    <div class="envoltura">
+      <span class="eyebrow">{bloqueCategorias.encabezado}</span>
+      <h2 class="titulo-seccion">{bloqueCategorias.titulo}</h2>
+      <p class="lead">{bloqueCategorias.texto}</p>
+
+      <div class="grid-categorias">
+        {ordenadas.map((c) => {
+          const cantidad = conteo(c.slug);
+          return (
+            <a
+              href={`/${c.slug}`}
+              class={`tarjeta-categoria${c.activo ? "" : " inactiva"}`}
+            >
+              <img src={c.imagen} alt={c.nombre} loading="lazy" width="640" height="420" />
+              <div class="cuerpo">
+                <h3>{c.nombre}</h3>
+                <p>{c.descripcion}</p>
+                {cantidad > 0 ? (
+                  <span class="enlace">{cantidad} referencias · Ver catálogo</span>
+                ) : (
+                  <span class="etiqueta-pronto">Próximamente</span>
+                )}
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion seccion-suave" id="como-comprar">
+    <div class="envoltura">
+      <span class="eyebrow">{comoComprar.encabezado}</span>
+      <h2 class="titulo-seccion">{comoComprar.titulo}</h2>
+
+      <div class="grid-pasos" style="margin-top:34px">
+        {comoComprar.pasos.map((paso, i) => (
+          <article class="paso">
+            <div class="num">{i + 1}</div>
+            <h3>{paso.titulo}</h3>
+            <p>{paso.texto}</p>
+          </article>
+        ))}
+      </div>
+
+      <p class="aviso">{aviso}</p>
+
+      <div style="margin-top:34px">
+        <a href={whatsapp} class="btn btn-turquesa" target="_blank" rel="noopener">
+          Escribir por WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

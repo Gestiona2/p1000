@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+*.log
+.env
+.env.*
+
+# Fotos originales del cliente: pesan demasiado y ya están procesadas en public/img.
+insumos/
