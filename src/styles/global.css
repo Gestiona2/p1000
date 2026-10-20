@@ -728,8 +728,8 @@ h1, h2, h3, h4 {
 .carrito-linea-unitario { font-size: 0.78rem; color: var(--turquesa-texto); font-weight: 600; }
 .carrito-cantidad { grid-area: cantidad; display: inline-flex; align-items: center; gap: 0; margin-top: 4px; }
 .carrito-cantidad button {
-  width: 26px;
-  height: 26px;
+  width: 32px;
+  height: 32px;
   border: 1px solid var(--borde);
   background: var(--blanco);
   color: var(--azul);
@@ -739,7 +739,7 @@ h1, h2, h3, h4 {
   line-height: 1;
 }
 .carrito-cantidad button:hover { background: var(--fondo-2); }
-.carrito-cantidad span { min-width: 28px; text-align: center; font-size: 0.86rem; font-weight: 700; }
+.carrito-cantidad span { min-width: 30px; text-align: center; font-size: 0.86rem; font-weight: 700; }
 .carrito-quitar {
   grid-area: quitar;
   align-self: start;
@@ -940,10 +940,16 @@ h1, h2, h3, h4 {
   .acciones-producto { flex-direction: row; gap: 6px; margin-top: 8px; }
   .acciones-producto .btn { padding: 9px 8px; font-size: 0.8rem; white-space: nowrap; }
   .acciones-producto .btn:first-child { flex: 1; min-width: 0; }
-  .acciones-producto .btn-icono { width: 36px; height: 36px; flex: none; }
+  .acciones-producto .btn-icono { width: 40px; height: 40px; flex: none; }
   .badge-agotado, .badge-destacado { top: 8px; font-size: 0.6rem; padding: 4px 8px; }
   .badge-agotado { left: 8px; }
   .badge-destacado { right: 8px; }
+}
+
+@media (max-width: 350px) {
+  .tarjeta-producto .foto { width: 104px; }
+  .acciones-producto { flex-wrap: wrap; }
+  .acciones-producto .btn:first-child { flex: 1 0 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
