@@ -1,5 +1,5 @@
 ---
-import { precioTexto, enlaceWhatsApp, mensajeProducto } from "../lib/formato.js";
+import { precioTexto, precioCOP, oferta, enlaceWhatsApp, mensajeProducto } from "../lib/formato.js";
 import sitio from "../datos/sitio.json";
 
 interface Props {
@@ -7,6 +7,7 @@ interface Props {
     slug: string;
     titulo: string;
     precio: number | null;
+    precio_antes?: number | null;
     marca?: string | null;
     color?: string | null;
     tallas?: string[];
@@ -21,6 +22,7 @@ const { producto } = Astro.props;
 const imagen = producto.imagenes?.[0] || "/img/placeholder.svg";
 const enlace = enlaceWhatsApp(sitio.whatsapp, mensajeProducto(producto));
 const url = `/calzado/${producto.slug}`;
+const promo = oferta(producto);
 const buscar = [producto.titulo, producto.marca, producto.color, producto.descripcion, ...(producto.tallas || [])]
   .filter(Boolean)
   .join(" ")
@@ -31,13 +33,22 @@ const buscar = [producto.titulo, producto.marca, producto.color, producto.descri
   <a href={url} class="foto" aria-label={`Ver detalles de ${producto.titulo}`}>
     <img src={imagen} alt={`${producto.titulo}${producto.color ? `, ${producto.color}` : ""}`} loading="lazy" width="600" height="600" />
     {!producto.stock && <span class="badge-agotado">Agotado</span>}
+    {promo.descuento && producto.stock && <span class="badge-descuento">-{promo.descuento}%</span>}
     {producto.destacado && producto.stock && <span class="badge-destacado">Destacado</span>}
   </a>
   <div class="cuerpo">
     {producto.marca && <span class="marca-producto">{producto.marca}</span>}
     <h3><a href={url}>{producto.titulo}</a></h3>
     {producto.color && <p class="color-producto">{producto.color}</p>}
-    <p class="precio">{precioTexto(producto)}</p>
+    {promo.descuento ? (
+      <p class="precio precio-oferta">
+        <s>{precioCOP(producto.precio_antes)}</s>
+        <strong>{precioTexto(producto)}</strong>
+        <span class="precio-ahorro">Ahorras {precioCOP(promo.ahorro)}</span>
+      </p>
+    ) : (
+      <p class="precio">{precioTexto(producto)}</p>
+    )}
     <div class="acciones-producto">
       <a href={url} class="btn btn-azul">Ver detalles</a>
       <button

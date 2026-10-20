@@ -1,0 +1,54 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ProductCard from "../components/ProductCard.astro";
+import productos from "../datos/productos.json";
+import { oferta } from "../lib/formato.js";
+
+const ofertas = productos
+  .filter((producto) => producto.stock !== false && oferta(producto).descuento)
+  .sort((a, b) => oferta(b).ahorro - oferta(a).ahorro);
+---
+
+<Layout
+  titulo="Ofertas · P1000"
+  descripcion="Referencias de P1000 con descuento vigente. Consulta tallas y disponibilidad por WhatsApp."
+  activa="ofertas"
+>
+  <header class="catalogo-cabecera">
+    <div class="envoltura">
+      <nav class="migas" aria-label="Ruta">
+        <a href="/">Inicio</a>
+        <span>/</span>
+        <span>Ofertas</span>
+      </nav>
+      <span class="eyebrow">Ahorra</span>
+      <h1>Ofertas de la temporada</h1>
+      <p>Referencias con descuento vigente. Los precios y la disponibilidad se confirman por WhatsApp.</p>
+    </div>
+  </header>
+
+  <div class="envoltura">
+    {ofertas.length > 0 ? (
+      <>
+        <p class="ofertas-resumen">
+          {ofertas.length} {ofertas.length === 1 ? "referencia en oferta" : "referencias en oferta"}.
+          Ordenadas por el mayor ahorro.
+        </p>
+        <div class="grid-productos">
+          {ofertas.map((producto) => <ProductCard producto={producto} />)}
+        </div>
+      </>
+    ) : (
+      <div class="grid-productos" style="grid-template-columns:1fr">
+        <div class="vacio">
+          <h2>Todavía no hay ofertas publicadas</h2>
+          <p>
+            Cuando haya precios y descuentos confirmados, aparecen aquí. Mientras tanto,
+            puedes ver todo el catálogo de calzado.
+          </p>
+          <a href="/calzado" class="btn btn-azul">Ver el calzado</a>
+        </div>
+      </div>
+    )}
+  </div>
+</Layout>

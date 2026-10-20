@@ -4,12 +4,18 @@ import datos from "../datos/inicio.json";
 import sitio from "../datos/sitio.json";
 import categorias from "../datos/categorias.json";
 import productos from "../datos/productos.json";
-import { enlaceWhatsApp } from "../lib/formato.js";
+import ProductCard from "../components/ProductCard.astro";
+import { elegirDestacados } from "../lib/destacados.js";
+import { enlaceWhatsApp, oferta } from "../lib/formato.js";
 
 const { portada, categorias: bloqueCategorias, comoComprar, aviso } = datos;
 const whatsapp = enlaceWhatsApp(sitio.whatsapp, "Hola P1000, quiero hacer un pedido.");
 const conteo = (slug) => productos.filter((p) => p.categoria === slug && p.stock).length;
 const ordenadas = [...categorias].sort((a, b) => a.orden - b.orden);
+const calzado = productos.filter((p) => p.categoria === "calzado");
+const escaparate = elegirDestacados(calzado, 4);
+const ofertas = calzado.filter((p) => oferta(p).descuento);
+const hayDestacado = escaparate.some((p) => p.destacado);
 ---
 
 <Layout titulo={datos.meta.titulo} descripcion={datos.meta.descripcion} activa="inicio">
@@ -65,6 +71,27 @@ const ordenadas = [...categorias].sort((a, b) => a.orden - b.orden);
       </div>
     </div>
   </section>
+
+  {escaparate.length > 0 && (
+    <section class="seccion" id="destacados">
+      <div class="envoltura">
+        <div class="seccion-cabeza">
+          <div>
+            <span class="eyebrow">Temporada</span>
+            <h2 class="titulo-seccion">{hayDestacado ? "Referencias destacadas" : "Recomendados para ti"}</h2>
+            <p class="lead">Una selección del calzado disponible. Cada par se agrega con su talla y color.</p>
+          </div>
+          <div class="seccion-enlaces">
+            <a class="btn btn-borde" href="/calzado">Ver todo el calzado</a>
+            {ofertas.length > 0 && <a class="btn btn-amarillo" href="/ofertas">Ver ofertas</a>}
+          </div>
+        </div>
+        <div class="grid-productos grilla-destacados">
+          {escaparate.map((producto) => <ProductCard producto={producto} />)}
+        </div>
+      </div>
+    </section>
+  )}
 
   <section class="seccion seccion-suave" id="como-comprar">
     <div class="envoltura">

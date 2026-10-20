@@ -1,0 +1,76 @@
+{
+  "_comentario": "Textos legales redactados como punto de partida según la Ley 1581 de 2012 y el Decreto 1074 de 2015. No son asesoría jurídica: deben ser revisados por un abogado antes de publicar en el dominio definitivo.",
+  "actualizado": "2026-10-20",
+  "privacidad": {
+    "titulo": "Política de privacidad",
+    "entrada": "Esta política explica qué información usa P1000 cuando visitas el sitio y armas un pedido, y cómo puedes ejercer tus derechos.",
+    "secciones": [
+      {
+        "titulo": "Quién es el responsable",
+        "texto": "P1000 es responsable de la información que recibe a través de este sitio y de su WhatsApp de atención. El canal de contacto para cualquier asunto relacionado con tus datos es el WhatsApp 313 476 9855."
+      },
+      {
+        "titulo": "Qué información recogemos",
+        "texto": "Cuando armas un pedido nos das tu nombre, teléfono, ciudad, la forma de entrega que prefieres y, si la escribes, tu dirección y una nota. También registramos las referencias, tallas, colores y número de pares que agregas al pedido."
+      },
+      {
+        "titulo": "Para qué la usamos",
+        "texto": "Usamos esos datos únicamente para recibir y coordinar tu pedido, confirmar precio, tallas, disponibilidad y entrega, y responderte por WhatsApp. No hacemos publicidad con tus datos ni los vendemos."
+      },
+      {
+        "titulo": "Qué se guarda en tu navegador",
+        "texto": "El pedido y el aviso de promoción se guardan en el almacenamiento local de tu navegador para que no los pierdas al cambiar de página. No salen de tu dispositivo, no los podemos consultar y desaparecen si borras los datos del navegador. El sitio no usa cookies de publicidad ni analítica."
+      },
+      {
+        "titulo": "WhatsApp",
+        "texto": "Al enviar el pedido se abre WhatsApp con el mensaje ya escrito; tú decides si lo envías. La conversación queda en tu teléfono y en el de P1000, y WhatsApp trata la información según sus propias políticas. P1000 no recibe ni almacena esos datos en un servidor del sitio."
+      },
+      {
+        "titulo": "Cuánto tiempo los conservamos",
+        "texto": "La conversación de WhatsApp permanece en el historial mientras sea necesaria para atender el pedido y las obligaciones que resulten de la venta. Puedes pedir su eliminación escribiendo al mismo número."
+      },
+      {
+        "titulo": "Tus derechos",
+        "texto": "Puedes conocer, actualizar, rectificar y suprimir tus datos, y revocar la autorización para tratarlos. Escribe al WhatsApp 313 476 9855 indicando qué quieres hacer. También puedes presentar una reclamación ante la Superintendencia de Industria y Comercio."
+      },
+      {
+        "titulo": "Cambios en esta política",
+        "texto": "Si cambia la forma en que tratamos los datos, actualizaremos esta página y la fecha de última actualización."
+      }
+    ]
+  },
+  "datos": {
+    "titulo": "Tratamiento de datos personales",
+    "entrada": "En cumplimiento de la Ley 1581 de 2012 y del Decreto 1074 de 2015, P1000 informa cómo trata los datos personales de quienes hacen pedidos por este sitio.",
+    "secciones": [
+      {
+        "titulo": "Responsable del tratamiento",
+        "texto": "P1000, tienda de catálogo con atención por WhatsApp, es responsable del tratamiento de los datos que recibe por este sitio. Canal de atención y de derechos: WhatsApp 313 476 9855."
+      },
+      {
+        "titulo": "Datos que se tratan",
+        "texto": "Nombre, teléfono, ciudad, dirección de entrega cuando la suministras, forma de entrega preferida, nota del pedido y las referencias, tallas, colores y cantidades solicitadas. No pedimos datos de salud, financieros ni documentos de identidad."
+      },
+      {
+        "titulo": "Finalidad",
+        "texto": "Recibir, cotizar, confirmar y coordinar el pedido; responder consultas; acordar la entrega y, si corresponde, gestionar cambios o reclamos. Los datos no se usan para fines distintos sin tu autorización."
+      },
+      {
+        "titulo": "Autorización",
+        "texto": "Al diligenciar el formulario y enviar el pedido por WhatsApp autorizas el tratamiento de tus datos para las finalidades descritas. Los campos de dirección y nota son opcionales: puedes enviar el pedido sin ellos, aunque la entrega a domicilio puede requerir la dirección."
+      },
+      {
+        "titulo": "Tus derechos",
+        "texto": "Puedes conocer, actualizar, rectificar y suprimir tus datos, solicitar prueba de la autorización, revocarla y presentar quejas. Para ejercerlos escribe al WhatsApp 313 476 9855. También puedes acudir a la Superintendencia de Industria y Comercio."
+      },
+      {
+        "titulo": "Seguridad y conservación",
+        "texto": "La información se maneja por el canal de WhatsApp y se conserva el tiempo necesario para atender el pedido y cumplir las obligaciones legales. No se comparte con terceros ajenos a la atención del pedido."
+      },
+      {
+        "titulo": "Menores de edad",
+        "texto": "El sitio está dirigido al público general. Si un menor de edad hace un pedido, debe contar con la autorización de su representante legal."
+      }
+    ]
+  }
+}

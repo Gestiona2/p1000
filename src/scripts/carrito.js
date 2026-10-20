@@ -1,14 +1,13 @@
 /**
- * Panel del pedido. La lógica vive en pedido.js; aquí solo está la interfaz.
- * El pedido se guarda en el navegador para no perderlo al cambiar de página.
+ * Panel del pedido. La lógica vive en pedido.js; aquí está la interfaz.
+ *
+ * Cada par se agrega con su talla y su color. Si se piden varios pares de la
+ * misma referencia, se agregan uno por uno y el mensaje los enumera.
  */
-import {
-  crearPedido,
-  armarMensaje,
-  enlaceWhatsApp,
-} from "./pedido.js";
+import { crearPedido, armarMensaje, ENTREGAS } from "./pedido.js";
+import { enlaceWhatsApp } from "../lib/formato.js";
 
-const CLAVE = "p1000-pedido";
+const CLAVE = "p1000-pedido-v2";
 
 const guardar = (lineas) => {
   try {
@@ -40,6 +39,18 @@ export function montarCarrito() {
   const whatsapp = panel.dataset.whatsapp || "";
   const fondo = document.getElementById("carritoFondo");
   const globo = document.querySelector(".carrito-globo");
+
+  const modal = document.getElementById("parModal");
+  const modalFondo = document.getElementById("parFondo");
+  const formPar = document.getElementById("parForm");
+  const tituloPar = document.getElementById("parTitulo");
+  const refPar = document.getElementById("parRef");
+  const tallaPar = document.getElementById("parTalla");
+  const colorPar = document.getElementById("parColor");
+
+  let productoModal = null;
+  let focoModal = null;
+  let overflowPrevio = "";
 
   const pedido = crearPedido({
     alCambiar: (p) => {
@@ -85,20 +96,34 @@ export function montarCarrito() {
         ${lineas
           .map(
             (linea) => `
-          <article class="carrito-linea" data-slug="${linea.slug}">
+          <article class="carrito-linea" data-linea="${linea.slug}">
             <img src="${base}${linea.imagen.replace(/^\/+/, "")}" alt="" width="64" height="64" loading="lazy">
             <div class="carrito-linea-datos">
               <a href="${base}calzado/${linea.slug}">${escapar(linea.titulo)}</a>
-              ${linea.color ? `<span class="carrito-linea-color">${escapar(linea.color)}</span>` : ""}
+              ${linea.colorReferencia ? `<span class="carrito-linea-color">${escapar(linea.colorReferencia)}</span>` : ""}
+              <ul class="carrito-pares">
+                ${linea.pares
+                  .map(
+                    (par, indice) => `
+                  <li>
+                    <span>
+                      <b>Par ${indice + 1}</b>
+                      · Talla ${escapar(par.talla || "por confirmar")}
+                      · ${escapar(par.color || "color por confirmar")}
+                    </span>
+                    <button type="button" data-quitar-par="${linea.slug}" data-id="${par.id}"
+                            aria-label="Quitar el par ${indice + 1} de ${escapar(linea.titulo)}">×</button>
+                  </li>`
+                  )
+                  .join("")}
+              </ul>
+              <button type="button" class="carrito-otro-par" data-otro-par="${linea.slug}">
+                + Agregar otro par
+              </button>
               <span class="carrito-linea-unitario">Precio por confirmar</span>
             </div>
-            <div class="carrito-cantidad">
-              <button type="button" data-menos="${linea.slug}" aria-label="Quitar una unidad">−</button>
-              <span aria-live="polite">${linea.cantidad}</span>
-              <button type="button" data-mas="${linea.slug}" aria-label="Agregar una unidad">+</button>
-            </div>
             <button type="button" class="carrito-quitar" data-quitar="${linea.slug}"
-                    aria-label="Quitar ${escapar(linea.titulo)} del pedido">×</button>
+                    aria-label="Quitar toda la referencia ${escapar(linea.titulo)}">×</button>
           </article>`
           )
           .join("")}
@@ -115,35 +140,57 @@ export function montarCarrito() {
         <label>Ciudad
           <input name="ciudad" required autocomplete="address-level2" placeholder="Bogotá" value="${escapar(previos.ciudad || "")}">
         </label>
-        <label>Dirección <span class="opcional">(opcional)</span>
+        <label>¿Cómo quieres recibirlo?
+          <select name="entrega">
+            ${Object.entries(ENTREGAS)
+              .map(
+                ([valor, texto]) =>
+                  `<option value="${valor}"${(previos.entrega || "coordinar") === valor ? " selected" : ""}>${texto}</option>`
+              )
+              .join("")}
+          </select>
+        </label>
+        <label>Dirección <span class="opcional">(si es a domicilio)</span>
           <input name="direccion" autocomplete="street-address" placeholder="Cra 10 #20-30" value="${escapar(previos.direccion || "")}">
         </label>
         <label>Nota <span class="opcional">(opcional)</span>
-          <textarea name="nota" rows="2" placeholder="Talla 38, color negro, etc.">${escapar(previos.nota || "")}</textarea>
+          <textarea name="nota" rows="2" placeholder="Horario, referencia del lugar, etc.">${escapar(previos.nota || "")}</textarea>
         </label>
 
         <div class="carrito-total">
           <div class="carrito-total-linea">
-            <span>Referencias</span>
-            <strong>${lineas.length} · ${p.unidades()} ${p.unidades() === 1 ? "unidad" : "unidades"}</strong>
+            <span>Pedido</span>
+            <strong>${lineas.length} ${lineas.length === 1 ? "referencia" : "referencias"} · ${p.unidades()} ${p.unidades() === 1 ? "par" : "pares"}</strong>
           </div>
           <button type="submit" class="btn btn-turquesa carrito-enviar">
             Enviar pedido por WhatsApp
           </button>
           <p class="carrito-nota">
             Se abre WhatsApp con tu pedido escrito. P1000 confirma precio,
-            tallas, disponibilidad y envío antes de cerrar la compra.
+            disponibilidad y entrega antes de cerrar la compra.
           </p>
         </div>
       </form>`;
 
     cuerpo.querySelector("#formPedido").addEventListener("submit", enviarPedido);
+    cuerpo.querySelector("#formPedido").addEventListener("input", (evento) => {
+      evento.target.classList.remove("campo-falta");
+    });
   }
 
   function enviarPedido(evento) {
     evento.preventDefault();
     const formulario = evento.target;
     const datos = Object.fromEntries(new FormData(formulario));
+
+    const pendientes = pedido.faltantes();
+    if (pendientes.length > 0) {
+      const falta = pendientes[0];
+      avisar(
+        `Falta ${falta.faltaTalla ? "la talla" : "el color"} del par ${falta.numero} de ${falta.titulo}. Quítalo y agrégalo de nuevo.`
+      );
+      return;
+    }
 
     const faltantes = ["nombre", "telefono", "ciudad"].filter(
       (campo) => !String(datos[campo] || "").trim()
@@ -162,6 +209,58 @@ export function montarCarrito() {
     const mensaje = armarMensaje(pedido, datos);
     window.open(enlaceWhatsApp(whatsapp, mensaje), "_blank", "noopener");
     avisar("Pedido enviado. Revisa WhatsApp.");
+  }
+
+  function abrirModal(producto) {
+    if (!modal || !modalFondo || !formPar) return;
+    productoModal = producto;
+    focoModal = document.activeElement;
+    overflowPrevio = document.body.style.overflow;
+
+    tituloPar.textContent = producto.titulo || "Agregar al pedido";
+    refPar.textContent = producto.color
+      ? `Color de la referencia: ${producto.color}`
+      : "Elige talla y color para este par.";
+    tallaPar.value = "";
+    colorPar.value = producto.color || "";
+
+    modalFondo.hidden = false;
+    modal.hidden = false;
+    document.body.style.overflow = "hidden";
+    requestAnimationFrame(() => tallaPar.focus());
+  }
+
+  function cerrarModal() {
+    if (!modal || !modalFondo) return;
+    modal.hidden = true;
+    modalFondo.hidden = true;
+    productoModal = null;
+    document.body.style.overflow = overflowPrevio;
+    focoModal?.focus?.();
+  }
+
+  function agregarParDesdeModal(evento) {
+    evento.preventDefault();
+    if (!productoModal) return;
+
+    const talla = tallaPar.value.trim();
+    const color = colorPar.value.trim();
+    if (!talla) {
+      tallaPar.focus();
+      tallaPar.classList.add("campo-falta");
+      avisar("Escribe la talla de este par");
+      return;
+    }
+    if (!color) {
+      colorPar.focus();
+      colorPar.classList.add("campo-falta");
+      avisar("Escribe el color de este par");
+      return;
+    }
+
+    pedido.agregar(productoModal, { talla, color });
+    avisar(`Par talla ${talla} agregado`);
+    cerrarModal();
   }
 
   let ultimoFoco = null;
@@ -190,38 +289,84 @@ export function montarCarrito() {
   document.getElementById("cerrarCarrito")?.addEventListener("click", cerrar);
   fondo?.addEventListener("click", cerrar);
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !panel.hidden) cerrar();
+    if (e.key !== "Escape") return;
+    if (modal && !modal.hidden) {
+      cerrarModal();
+      return;
+    }
+    if (!panel.hidden) cerrar();
   });
 
-  // Agregar desde tarjetas y ficha de producto.
+  // Modal para agregar un par desde la tarjeta o la ventana de promoción.
+  modalFondo?.addEventListener("click", cerrarModal);
+  document.getElementById("cerrarPar")?.addEventListener("click", cerrarModal);
+  document.getElementById("cancelarPar")?.addEventListener("click", cerrarModal);
+  formPar?.addEventListener("submit", agregarParDesdeModal);
+  [tallaPar, colorPar].forEach((campo) => {
+    campo?.addEventListener("input", () => campo.classList.remove("campo-falta"));
+  });
+  document.getElementById("formParDetalle")?.querySelectorAll("input").forEach((campo) => {
+    campo.addEventListener("input", () => campo.classList.remove("campo-falta"));
+  });
+
+  // Agregar desde tarjetas, ficha de producto y promoción.
   document.addEventListener("click", (evento) => {
     const agregar = evento.target.closest("[data-agregar]");
     if (agregar) {
-      const cantidad = Number(agregar.dataset.cantidad || 1);
-      pedido.agregar(
-        {
-          slug: agregar.dataset.agregar,
-          titulo: agregar.dataset.titulo,
-          color: agregar.dataset.color || "",
-          imagen: agregar.dataset.imagen || "",
-        },
-        cantidad
-      );
-      avisar(`${agregar.dataset.titulo} agregado`);
+      const producto = {
+        slug: agregar.dataset.agregar,
+        titulo: agregar.dataset.titulo,
+        color: agregar.dataset.color || "",
+        imagen: agregar.dataset.imagen || "",
+      };
+
+      const idFormulario = agregar.dataset.formPar;
+      if (idFormulario) {
+        const formulario = document.getElementById(idFormulario);
+        const talla = formulario?.querySelector("[name=talla]");
+        const color = formulario?.querySelector("[name=color]");
+        if (!formulario || !talla || !color) return;
+
+        if (!talla.value.trim()) {
+          talla.focus();
+          talla.classList.add("campo-falta");
+          avisar("Escribe la talla de este par");
+          return;
+        }
+        if (!color.value.trim()) {
+          color.focus();
+          color.classList.add("campo-falta");
+          avisar("Escribe el color de este par");
+          return;
+        }
+
+        pedido.agregar(producto, { talla: talla.value, color: color.value });
+        avisar(`Par talla ${talla.value.trim()} agregado`);
+        talla.value = "";
+        talla.focus();
+        return;
+      }
+
+      abrirModal(producto);
       return;
     }
 
-    const mas = evento.target.closest("[data-mas]");
-    if (mas) {
-      const linea = pedido.lineas().find((l) => l.slug === mas.dataset.mas);
-      if (linea) pedido.cambiarCantidad(linea.slug, linea.cantidad + 1);
+    const otro = evento.target.closest("[data-otro-par]");
+    if (otro) {
+      const linea = pedido.lineas().find((l) => l.slug === otro.dataset.otroPar);
+      if (!linea) return;
+      abrirModal({
+        slug: linea.slug,
+        titulo: linea.titulo,
+        color: linea.colorReferencia,
+        imagen: linea.imagen,
+      });
       return;
     }
 
-    const menos = evento.target.closest("[data-menos]");
-    if (menos) {
-      const linea = pedido.lineas().find((l) => l.slug === menos.dataset.menos);
-      if (linea) pedido.cambiarCantidad(linea.slug, linea.cantidad - 1);
+    const quitarPar = evento.target.closest("[data-quitar-par]");
+    if (quitarPar) {
+      pedido.quitarPar(quitarPar.dataset.quitarPar, quitarPar.dataset.id);
       return;
     }
 
@@ -229,22 +374,6 @@ export function montarCarrito() {
     if (quitar) {
       pedido.quitar(quitar.dataset.quitar);
     }
-  });
-
-  // Selector de cantidad en la ficha del producto.
-  document.addEventListener("click", (evento) => {
-    const mas = evento.target.closest("[data-cantidad-mas]");
-    const menos = evento.target.closest("[data-cantidad-menos]");
-    if (!mas && !menos) return;
-
-    const salida = document.getElementById("cantidadDetalle");
-    const boton = document.getElementById("agregarDetalle");
-    if (!salida || !boton) return;
-
-    const actual = Math.max(1, Number(salida.textContent) || 1);
-    const siguiente = mas ? actual + 1 : Math.max(1, actual - 1);
-    salida.textContent = String(siguiente);
-    boton.dataset.cantidad = String(siguiente);
   });
 
   let temporizador = null;
@@ -260,7 +389,7 @@ export function montarCarrito() {
     aviso.textContent = texto;
     aviso.classList.add("visible");
     clearTimeout(temporizador);
-    temporizador = setTimeout(() => aviso.classList.remove("visible"), 2600);
+    temporizador = setTimeout(() => aviso.classList.remove("visible"), 3000);
   }
 
   pedido.importar(recuperar());

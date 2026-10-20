@@ -1,11 +1,36 @@
 /**
- * El pedido: qué referencias lleva, cuántas unidades y cómo se convierte
- * en un mensaje de WhatsApp.
+ * El pedido: referencias, pares con su talla y color, entrega y mensaje
+ * de WhatsApp.
  *
- * No hay sumas ni precios: el catálogo todavía no tiene valores definidos.
- * El carrito sirve para armar la solicitud y que P1000 confirme precio,
- * tallas y envío por WhatsApp.
+ * Cada par es independiente: si alguien pide dos pares del mismo producto
+ * con tallas distintas, quedan dos líneas de par dentro de la referencia.
+ * No hay sumas ni precios: P1000 confirma valor y disponibilidad en el chat.
  */
+
+export const ENTREGAS = {
+  coordinar: "Coordinar por WhatsApp",
+  domicilio: "Envío a domicilio",
+  recoger: "Recoger / entrega personal",
+};
+
+const nuevoId = () =>
+  `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+
+const limpiar = (texto) => String(texto || "").trim();
+
+const copiarPar = (par) => ({
+  id: par.id || nuevoId(),
+  talla: limpiar(par.talla),
+  color: limpiar(par.color),
+});
+
+const copiarLinea = (linea) => ({
+  slug: linea.slug,
+  titulo: linea.titulo,
+  imagen: linea.imagen || "",
+  colorReferencia: linea.colorReferencia || "",
+  pares: linea.pares.map(copiarPar),
+});
 
 export function crearPedido({ alCambiar = () => {} } = {}) {
   let lineas = [];
@@ -13,40 +38,47 @@ export function crearPedido({ alCambiar = () => {} } = {}) {
   const avisar = () => alCambiar(api);
 
   const api = {
-    lineas: () => lineas.map((l) => ({ ...l })),
+    lineas: () => lineas.map(copiarLinea),
 
-    unidades: () => lineas.reduce((suma, l) => suma + l.cantidad, 0),
+    unidades: () => lineas.reduce((suma, l) => suma + l.pares.length, 0),
 
-    agregar(producto, cantidad = 1) {
-      const existente = lineas.find((l) => l.slug === producto.slug);
-      if (existente) {
-        existente.cantidad += cantidad;
-      } else {
-        lineas.push({
+    agregar(producto, par = {}) {
+      const talla = limpiar(par.talla);
+      const color = limpiar(par.color) || limpiar(producto.color);
+      let linea = lineas.find((l) => l.slug === producto.slug);
+      if (!linea) {
+        linea = {
           slug: producto.slug,
           titulo: producto.titulo,
-          color: producto.color || "",
           imagen: producto.imagen || "",
-          cantidad,
-        });
+          colorReferencia: producto.color || "",
+          pares: [],
+        };
+        lineas.push(linea);
       }
+      linea.pares.push({
+        id: nuevoId(),
+        talla,
+        color,
+      });
       avisar();
       return api;
     },
 
-    cambiarCantidad(slug, cantidad) {
+    quitarPar(slug, id) {
       const linea = lineas.find((l) => l.slug === slug);
       if (!linea) return api;
-      if (cantidad <= 0) {
-        lineas = lineas.filter((l) => l.slug !== slug);
-      } else {
-        linea.cantidad = cantidad;
-      }
+      linea.pares = linea.pares.filter((par) => par.id !== id);
+      if (linea.pares.length === 0) lineas = lineas.filter((l) => l.slug !== slug);
       avisar();
       return api;
     },
 
-    quitar: (slug) => api.cambiarCantidad(slug, 0),
+    quitar(slug) {
+      lineas = lineas.filter((l) => l.slug !== slug);
+      avisar();
+      return api;
+    },
 
     vaciar() {
       lineas = [];
@@ -54,15 +86,46 @@ export function crearPedido({ alCambiar = () => {} } = {}) {
       return api;
     },
 
-    exportar: () => lineas.map((l) => ({ ...l })),
+    faltantes() {
+      const pendientes = [];
+      for (const linea of lineas) {
+        linea.pares.forEach((par, indice) => {
+          if (!par.talla || !par.color) {
+            pendientes.push({
+              slug: linea.slug,
+              titulo: linea.titulo,
+              numero: indice + 1,
+              faltaTalla: !par.talla,
+              faltaColor: !par.color,
+            });
+          }
+        });
+      }
+      return pendientes;
+    },
+
+    exportar: () => lineas.map(copiarLinea),
 
     importar(guardadas) {
-      if (Array.isArray(guardadas)) {
-        lineas = guardadas.filter(
-          (l) => l && l.slug && l.titulo && l.cantidad > 0
-        );
-        avisar();
-      }
+      if (!Array.isArray(guardadas)) return api;
+      lineas = guardadas
+        .filter((l) => l && l.slug && l.titulo)
+        .map((l) => {
+          const pares = Array.isArray(l.pares)
+            ? l.pares.filter((par) => par && typeof par === "object").map(copiarPar)
+            : [];
+          return pares.length
+            ? {
+                slug: l.slug,
+                titulo: l.titulo,
+                imagen: l.imagen || "",
+                colorReferencia: l.colorReferencia || l.color || "",
+                pares,
+              }
+            : null;
+        })
+        .filter(Boolean);
+      avisar();
       return api;
     },
   };
@@ -74,12 +137,22 @@ export function armarMensaje(pedido, datos) {
   const lineas = pedido.lineas();
   if (lineas.length === 0) throw new Error("El pedido está vacío");
 
+  const pendientes = pedido.faltantes();
+  if (pendientes.length > 0) {
+    throw new Error(
+      `Falta talla o color en ${pendientes[0].titulo}, par ${pendientes[0].numero}`
+    );
+  }
+
   const partes = ["*Nuevo pedido — P1000*", ""];
 
   for (const linea of lineas) {
-    const color = linea.color ? ` (${linea.color})` : "";
-    partes.push(`• ${linea.titulo}${color}`);
-    partes.push(`   x${linea.cantidad}`);
+    partes.push(`• ${linea.titulo}`);
+    linea.pares.forEach((par, indice) => {
+      partes.push(
+        `   Par ${indice + 1}: talla ${par.talla} · color ${par.color}`
+      );
+    });
   }
 
   partes.push("");
@@ -87,21 +160,15 @@ export function armarMensaje(pedido, datos) {
   partes.push(`Nombre: ${datos.nombre}`);
   partes.push(`Teléfono: ${datos.telefono}`);
   if (datos.ciudad) partes.push(`Ciudad: ${datos.ciudad}`);
+  if (datos.entrega) {
+    partes.push(`Entrega: ${ENTREGAS[datos.entrega] || datos.entrega}`);
+  }
   if (datos.direccion) partes.push(`Dirección: ${datos.direccion}`);
   if (datos.nota) partes.push(`Nota: ${datos.nota}`);
   partes.push("");
-  partes.push("Quedo pendiente de precio, tallas y envío. ¡Gracias!");
+  partes.push(
+    "Quedo pendiente de precio, disponibilidad y coordinación de la entrega. ¡Gracias!"
+  );
 
   return partes.join("\n");
-}
-
-export function numeroWhatsApp(numero) {
-  const digitos = String(numero || "").replace(/\D/g, "");
-  if (!digitos) return "";
-  if (digitos.startsWith("57")) return digitos;
-  return `57${digitos}`;
-}
-
-export function enlaceWhatsApp(numero, mensaje) {
-  return `https://wa.me/${numeroWhatsApp(numero)}?text=${encodeURIComponent(mensaje)}`;
 }

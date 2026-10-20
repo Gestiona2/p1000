@@ -761,10 +761,8 @@ h1, h2, h3, h4 {
 .carrito-linea {
   display: grid;
   grid-template-columns: 64px 1fr auto;
-  grid-template-areas:
-    "foto datos quitar"
-    "foto cantidad quitar";
-  align-items: center;
+  grid-template-areas: "foto datos quitar";
+  align-items: start;
   gap: 2px 12px;
   padding: 10px;
   background: var(--blanco);
@@ -835,6 +833,7 @@ h1, h2, h3, h4 {
 }
 .carrito-datos .opcional { font-weight: 400; color: var(--tinta-tenue); }
 .carrito-datos input,
+.carrito-datos select,
 .carrito-datos textarea {
   width: 100%;
   border: 1px solid var(--borde);
@@ -847,6 +846,7 @@ h1, h2, h3, h4 {
   resize: vertical;
 }
 .carrito-datos input:focus,
+.carrito-datos select:focus,
 .carrito-datos textarea:focus {
   outline: none;
   border-color: var(--turquesa);
@@ -945,6 +945,352 @@ h1, h2, h3, h4 {
 }
 .flota-wa:hover { transform: translateY(-3px) scale(1.04); }
 
+
+/* ============================================================
+   Escaparate, ofertas y descuentos
+   ============================================================ */
+.seccion-cabeza {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.seccion-cabeza .lead { margin-bottom: 0; }
+.seccion-enlaces { display: flex; gap: 10px; flex-wrap: wrap; }
+.grilla-destacados { padding-bottom: 0; }
+.ofertas-resumen { margin: 24px 0 0; color: var(--tinta-suave); font-size: 0.92rem; }
+.badge-descuento {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1;
+  font-family: var(--fuente-titulos);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: var(--turquesa);
+  color: #04252a;
+}
+.precio-oferta { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; }
+.precio-oferta s { color: var(--tinta-tenue); font-weight: 500; font-size: 0.86em; }
+.precio-oferta strong { color: var(--azul); }
+.precio-ahorro {
+  flex-basis: 100%;
+  font-family: var(--fuente-cuerpo);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--turquesa-texto);
+}
+.info-precio-linea { display: flex; align-items: baseline; flex-wrap: wrap; gap: 9px; }
+.info-precio-linea strong { display: inline; font-size: clamp(1.35rem, 3vw, 1.7rem); }
+.info-precio-linea s { color: var(--tinta-tenue); font-size: 0.95rem; }
+.ficha-descuento {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--turquesa);
+  color: #04252a;
+  font-family: var(--fuente-titulos);
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+/* ============================================================
+   Elegir talla y color
+   ============================================================ */
+.elegir-par {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  background: var(--blanco);
+}
+.elegir-par label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--tinta-suave);
+}
+.elegir-par input {
+  width: 100%;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 9px 11px;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--tinta);
+  background: var(--fondo);
+}
+.elegir-par input:focus {
+  outline: none;
+  border-color: var(--turquesa);
+  box-shadow: 0 0 0 3px rgba(1, 173, 177, 0.14);
+}
+.nota-par { font-size: 0.78rem; color: var(--tinta-tenue); margin-top: -4px; }
+.campo-falta { border-color: #c0392b !important; box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.12) !important; }
+
+/* ============================================================
+   Pares dentro del carrito
+   ============================================================ */
+.carrito-pares { list-style: none; display: flex; flex-direction: column; gap: 4px; margin: 5px 0 2px; }
+.carrito-pares li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 7px;
+  border-radius: 6px;
+  background: var(--fondo);
+  font-size: 0.78rem;
+  color: var(--tinta-suave);
+  line-height: 1.4;
+}
+.carrito-pares b { color: var(--azul); font-weight: 700; }
+.carrito-pares button {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--tinta-tenue);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.carrito-pares button:hover { background: #fdecec; color: #b42318; }
+.carrito-otro-par {
+  align-self: flex-start;
+  margin-top: 1px;
+  padding: 2px 0;
+  border: none;
+  background: transparent;
+  color: var(--turquesa-texto);
+  font-family: var(--fuente-titulos);
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.carrito-otro-par:hover { text-decoration: underline; }
+.carrito-linea-unitario { display: block; margin-top: 3px; }
+
+/* ============================================================
+   Modal para agregar un par
+   ============================================================ */
+.par-fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(3, 32, 53, 0.55);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+.par-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  pointer-events: none;
+}
+.par-modal form {
+  position: relative;
+  width: min(430px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 28px;
+  border-radius: 20px;
+  background: var(--blanco);
+  box-shadow: 0 30px 70px rgba(3, 47, 83, 0.3);
+  pointer-events: auto;
+}
+.par-modal h2 { font-size: 1.35rem; color: var(--azul); margin-bottom: 6px; }
+.par-ref { font-size: 0.86rem; color: var(--tinta-suave); margin-bottom: 18px; }
+.par-modal label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--tinta-suave);
+}
+.par-modal input {
+  width: 100%;
+  border: 1px solid var(--borde);
+  border-radius: 9px;
+  padding: 11px 12px;
+  background: var(--fondo);
+  font: inherit;
+  font-size: 0.92rem;
+  color: var(--tinta);
+}
+.par-modal input:focus {
+  outline: none;
+  border-color: var(--turquesa);
+  box-shadow: 0 0 0 3px rgba(1, 173, 177, 0.14);
+  background: var(--blanco);
+}
+.par-ayuda { font-size: 0.78rem; line-height: 1.5; color: var(--tinta-tenue); margin: 2px 0 18px; }
+.par-acciones { display: grid; grid-template-columns: 1fr auto; gap: 9px; }
+.par-cerrar {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  place-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--borde);
+  border-radius: 50%;
+  background: var(--blanco);
+  color: var(--azul);
+  cursor: pointer;
+}
+.par-cerrar:hover { border-color: var(--turquesa); color: var(--turquesa-texto); }
+
+/* ============================================================
+   Páginas legales
+   ============================================================ */
+.legal { max-width: 860px; padding-top: 44px; padding-bottom: 84px; }
+.legal-doc h1 { font-size: clamp(2rem, 4vw, 2.8rem); color: var(--azul); margin-bottom: 8px; }
+.legal-fecha { font-size: 0.82rem; color: var(--tinta-tenue); margin-bottom: 22px; }
+.legal-entrada {
+  font-size: 1.02rem;
+  color: var(--tinta-suave);
+  padding: 16px 18px;
+  border-left: 4px solid var(--turquesa);
+  border-radius: 0 12px 12px 0;
+  background: var(--blanco);
+}
+.legal-doc section { margin-top: 30px; }
+.legal-doc h2 { font-size: 1.12rem; color: var(--azul); margin-bottom: 7px; }
+.legal-doc section p { color: var(--tinta-suave); font-size: 0.96rem; }
+.legal-pie {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid var(--borde);
+}
+.pie-legal { display: inline-flex; gap: 14px; flex-wrap: wrap; }
+.pie-final .pie-legal a { display: inline; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ============================================================
+   Promoción relámpago
+   ============================================================ */
+.promo-fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 75;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(3, 32, 53, 0.62);
+}
+.promo-caja {
+  position: relative;
+  width: min(860px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 28px;
+  border-radius: 22px;
+  background: var(--blanco);
+  box-shadow: 0 34px 80px rgba(3, 47, 83, 0.36);
+}
+.promo-cerrar {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  display: grid;
+  place-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--borde);
+  border-radius: 50%;
+  background: var(--blanco);
+  color: var(--azul);
+  cursor: pointer;
+}
+.promo-cerrar:hover { border-color: var(--turquesa); color: var(--turquesa-texto); }
+.promo-item { display: none; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; }
+.promo-item.activa { display: grid; }
+.promo-foto {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--fondo-2);
+  aspect-ratio: 1;
+}
+.promo-foto img { width: 100%; height: 100%; object-fit: cover; }
+.promo-descuento {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: var(--turquesa);
+  color: #04252a;
+  font-family: var(--fuente-titulos);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+.promo-datos .eyebrow { margin-bottom: 10px; }
+.promo-datos h2 { font-size: clamp(1.4rem, 3vw, 1.9rem); color: var(--azul); margin-bottom: 6px; }
+.promo-color { color: var(--tinta-suave); font-size: 0.92rem; margin-bottom: 14px; }
+.promo-precio { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.promo-precio s { color: var(--tinta-tenue); font-size: 0.92rem; }
+.promo-precio strong { font-family: var(--fuente-titulos); font-size: 1.4rem; color: var(--azul); }
+.promo-precio span { font-size: 0.8rem; font-weight: 600; color: var(--turquesa-texto); }
+.promo-condiciones { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.promo-condiciones span {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--turquesa-texto);
+  background: var(--fondo-2);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+.promo-acciones { display: flex; flex-wrap: wrap; gap: 9px; }
+.promo-controles { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 18px; }
+.promo-flecha {
+  display: grid;
+  place-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--borde);
+  border-radius: 50%;
+  background: var(--blanco);
+  color: var(--azul);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.promo-puntos { display: flex; align-items: center; gap: 6px; }
+.promo-punto {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--borde);
+  cursor: pointer;
+}
+.promo-punto.activo { background: var(--turquesa); }
+
 /* ============================================================
    Responsive
    ============================================================ */
@@ -1014,6 +1360,27 @@ h1, h2, h3, h4 {
   .tarjeta-producto .foto { width: 104px; }
   .acciones-producto { flex-wrap: wrap; }
   .acciones-producto .btn:first-child { flex: 1 0 100%; }
+}
+
+
+@media (max-width: 820px) {
+  .promo-item { grid-template-columns: 1fr; gap: 18px; }
+  .promo-foto { max-width: 320px; margin: 0 auto; }
+  .promo-caja { padding: 22px; }
+}
+@media (max-width: 640px) {
+  .elegir-par { grid-template-columns: 1fr; }
+  .seccion-cabeza { align-items: flex-start; }
+  .seccion-enlaces { width: 100%; }
+  .seccion-enlaces .btn { flex: 1; }
+  .par-modal { padding: 12px; }
+  .par-modal form { padding: 24px 18px; }
+  .par-acciones { grid-template-columns: 1fr; }
+  .legal { padding-top: 28px; }
+  .badge-descuento { top: 8px; left: 8px; font-size: 0.62rem; padding: 4px 8px; }
+  .carrito-linea { grid-template-columns: 56px 1fr auto; gap: 2px 9px; }
+  .carrito-linea img { width: 56px; height: 56px; }
+  .carrito-pares li { font-size: 0.74rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,0 +1,258 @@
+---
+/**
+ * Ventana de promoción relámpago.
+ *
+ * Solo aparece si hay un producto con promo_flash, precio y existencias.
+ * Se muestra una vez por hora en cada navegador. Si tiene vencimiento,
+ * desaparece sola al llegar la hora, incluso si el sitio no se reconstruye.
+ */
+import productos from "../datos/productos.json";
+import { oferta, promoVigente, precioCOP, precioTexto } from "../lib/formato.js";
+
+const base = import.meta.env.BASE_URL;
+const enlace = (ruta) => `${base}${ruta}`.replace(/\/{2,}/g, "/");
+
+const formatoVence = new Intl.DateTimeFormat("es-CO", {
+  timeZone: "America/Bogota",
+  day: "numeric",
+  month: "long",
+  hour: "numeric",
+  minute: "2-digit",
+});
+
+const vigencia = (iso) => {
+  if (!iso) return null;
+  const fecha = new Date(iso);
+  if (Number.isNaN(fecha.getTime())) return null;
+  return `Válida hasta ${formatoVence.format(fecha)}`;
+};
+
+const items = productos
+  .filter((producto) => promoVigente(producto))
+  .map((producto) => {
+    const { descuento, ahorro } = oferta(producto);
+    return {
+      ...producto,
+      descuento,
+      ahorro,
+      foto: enlace(producto.imagenes[0].replace(/^\/+/, "")),
+      detalle: enlace(`calzado/${producto.slug}`),
+      vigencia: vigencia(producto.promo_flash_vence),
+    };
+  });
+---
+
+{
+  items.length > 0 && (
+    <div class="promo-fondo" id="promoFondo" hidden>
+      <aside class="promo-caja" role="dialog" aria-modal="true" aria-label="Promoción relámpago">
+        <button type="button" class="promo-cerrar" id="promoCerrar" aria-label="Cerrar la promoción">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+
+        <div class="promo-items">
+          {items.map((producto, indice) => (
+            <article
+              class:list={["promo-item", { activa: indice === 0 }]}
+              data-promo={indice}
+              data-promo-vence={producto.promo_flash_vence ?? ""}
+              aria-hidden={indice !== 0}
+            >
+              <a class="promo-foto" href={producto.detalle} aria-label={`Ver ${producto.titulo}`}>
+                {producto.descuento && <span class="promo-descuento">-{producto.descuento}%</span>}
+                <img
+                  src={producto.foto}
+                  alt={`${producto.titulo}${producto.color ? `, ${producto.color}` : ""}`}
+                  width="440"
+                  height="440"
+                  loading="eager"
+                  decoding="async"
+                />
+              </a>
+
+              <div class="promo-datos">
+                <span class="eyebrow">Promoción relámpago</span>
+                <h2>{producto.titulo}</h2>
+                {producto.color && <p class="promo-color">{producto.color}</p>}
+
+                <div class="promo-precio">
+                  {producto.precio_antes && <s>{precioCOP(producto.precio_antes)}</s>}
+                  <strong>{precioTexto(producto)}</strong>
+                  {producto.ahorro && <span>Ahorras {precioCOP(producto.ahorro)}</span>}
+                </div>
+
+                {(producto.vigencia || producto.promo_flash_donde) && (
+                  <div class="promo-condiciones">
+                    {producto.vigencia && <span>{producto.vigencia}</span>}
+                    {producto.promo_flash_donde && <span>{producto.promo_flash_donde}</span>}
+                  </div>
+                )}
+
+                <div class="promo-acciones">
+                  <a class="btn btn-borde" href={producto.detalle}>Ver detalles</a>
+                  <button
+                    type="button"
+                    class="btn btn-azul"
+                    data-agregar={producto.slug}
+                    data-titulo={producto.titulo}
+                    data-color={producto.color || ""}
+                    data-imagen={producto.imagenes[0].replace(/^\/+/, "")}
+                  >
+                    Agregar al pedido
+                  </button>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {items.length > 1 && (
+          <div class="promo-controles">
+            <button type="button" class="promo-flecha" data-promo-anterior aria-label="Promoción anterior">‹</button>
+            <div class="promo-puntos" role="tablist" aria-label="Elegir promoción">
+              {items.map((producto, indice) => (
+                <button
+                  type="button"
+                  role="tab"
+                  class:list={["promo-punto", { activo: indice === 0 }]}
+                  data-promo-punto={indice}
+                  aria-selected={indice === 0}
+                  aria-label={producto.titulo}
+                />
+              ))}
+            </div>
+            <button type="button" class="promo-flecha" data-promo-siguiente aria-label="Promoción siguiente">›</button>
+          </div>
+        )}
+      </aside>
+    </div>
+  )
+}
+
+{
+  items.length > 0 && (
+    <script>
+      const fondo = document.getElementById("promoFondo");
+      const cerrar = document.getElementById("promoCerrar");
+      const anterior = document.querySelector("[data-promo-anterior]");
+      const siguiente = document.querySelector("[data-promo-siguiente]");
+      const clave = "p1000-promo-vista";
+      const HORA = 60 * 60 * 1000;
+      const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let piezas = [...document.querySelectorAll("[data-promo]")];
+      let puntos = [...document.querySelectorAll("[data-promo-punto]")];
+      let actual = 0;
+      let temporizador = null;
+
+      const mostrar = (indice) => {
+        if (!piezas.length) return;
+        actual = (indice + piezas.length) % piezas.length;
+        piezas.forEach((pieza, i) => {
+          const activa = i === actual;
+          pieza.classList.toggle("activa", activa);
+          pieza.setAttribute("aria-hidden", String(!activa));
+        });
+        puntos.forEach((punto, i) => {
+          punto.classList.toggle("activo", i === actual);
+          punto.setAttribute("aria-selected", String(i === actual));
+        });
+      };
+
+      const detener = () => {
+        if (temporizador) clearInterval(temporizador);
+        temporizador = null;
+      };
+
+      const arrancar = () => {
+        if (reducido || piezas.length < 2) return;
+        detener();
+        temporizador = setInterval(() => mostrar(actual + 1), 6500);
+      };
+
+      const ocultar = () => {
+        detener();
+        fondo.hidden = true;
+      };
+
+      const vigente = (pieza) => {
+        const vence = pieza.dataset.promoVence;
+        return !vence || new Date(vence).getTime() > Date.now();
+      };
+
+      const limpiarVencidas = () => {
+        let cambio = false;
+        piezas = piezas.filter((pieza) => {
+          if (vigente(pieza)) return true;
+          pieza.remove();
+          cambio = true;
+          return false;
+        });
+        if (!cambio) return;
+        if (!piezas.length) {
+          ocultar();
+          return;
+        }
+        puntos = [...document.querySelectorAll("[data-promo-punto]")];
+        mostrar(0);
+        arrancar();
+      };
+
+      const yaVista = () => {
+        try {
+          const visto = Number(localStorage.getItem(clave));
+          return !!visto && Date.now() - visto < HORA;
+        } catch {
+          return false;
+        }
+      };
+
+      const marcarVista = () => {
+        try {
+          localStorage.setItem(clave, String(Date.now()));
+        } catch {
+          /* sin almacenamiento: se muestra igual */
+        }
+      };
+
+      const abrir = () => {
+        limpiarVencidas();
+        if (!piezas.length || yaVista()) return;
+        marcarVista();
+        fondo.hidden = false;
+        mostrar(0);
+        arrancar();
+        setInterval(limpiarVencidas, 30000);
+      };
+
+      cerrar?.addEventListener("click", ocultar);
+      fondo?.addEventListener("click", (evento) => {
+        if (evento.target === fondo) ocultar();
+      });
+      document.addEventListener("keydown", (evento) => {
+        if (evento.key === "Escape" && !fondo.hidden) ocultar();
+      });
+      anterior?.addEventListener("click", () => {
+        mostrar(actual - 1);
+        arrancar();
+      });
+      siguiente?.addEventListener("click", () => {
+        mostrar(actual + 1);
+        arrancar();
+      });
+      puntos.forEach((punto) =>
+        punto.addEventListener("click", () => {
+          mostrar(Number(punto.dataset.promoPunto));
+          arrancar();
+        })
+      );
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", abrir, { once: true });
+      } else {
+        abrir();
+      }
+    </script>
+  )
+}
